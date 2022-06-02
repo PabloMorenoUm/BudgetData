@@ -1,4 +1,9 @@
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using BudgetData.Data;
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddDbContext<BudgetDataContext>(options =>
+    options.UseSqlServer(builder.Configuration.GetConnectionString("BudgetDataContext") ?? throw new InvalidOperationException("Connection string 'BudgetDataContext' not found.")));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
@@ -20,8 +25,10 @@ app.UseRouting();
 
 app.UseAuthorization();
 
+app.MapGet("/hello/{name:alpha}", (string name) => $"Hello {name}!");
+
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    pattern: "{controller=Transaction}/{action=Index}/{id?}");
 
 app.Run();

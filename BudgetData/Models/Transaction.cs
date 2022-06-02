@@ -7,8 +7,8 @@ public class Transaction
     public int Id { get; set; }
     public DateTime DateOfTransaction { get; set; }
     public string DescriptionOfTransaction { get; set; }
-    public decimal ValueOfTransaction { get; set; }
     public string Budget { get; set; }
+    public decimal ValueOfTransaction { get; set; }
 
     public override string ToString()
     {
