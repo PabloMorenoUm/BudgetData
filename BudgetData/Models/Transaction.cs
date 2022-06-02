@@ -7,7 +7,7 @@ public class Transaction
 {
     public int Id { get; set; }
     
-    [Display(Name = "Beliebiger Name")]
+    [Display(Name = "Datum")]
     [DataType(DataType.Date)]
     public DateTime DateOfTransaction { get; set; }
     

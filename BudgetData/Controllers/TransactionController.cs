@@ -22,16 +22,31 @@ namespace BudgetData.Controllers
         // GET: Transaction
         public async Task<IActionResult> Index()
         {
-            var transactions = from m in _context.Transaction
-                select m;
-            var transactionViewModel = new TransactionViewModel()
+            var transactions = await (from m in _context.Transaction
+                select m).ToListAsync();
+            var budgets = transactions.Select(transactions => transactions.Budget).Distinct();
+
+            var transactionTableViewModel = new TransactionsTableViewModel()
             {
-                Transactions = await transactions.ToListAsync(),
-                TotalSum = transactions.Select(t => t.ValueOfTransaction)
-                    .Sum()
+                TotalSum = 0,
+                TransactionsPerCategories = new List<TransactionsPerCategory>()
             };
+            
+            foreach (var budget in budgets)
+            {
+                var _transactions = transactions.Where(transactions => transactions.Budget == budget);
+                var _totalSum = _transactions.Select(t => t.ValueOfTransaction).Sum();
+                var transactionsPerCategory = new TransactionsPerCategory()
+                {
+                    Transactions = _transactions.ToList(),
+                    TotalSum = _totalSum
+                };
+                transactionTableViewModel.TransactionsPerCategories.Add(transactionsPerCategory);
+                transactionTableViewModel.TotalSum += transactionsPerCategory.TotalSum;
+            }
+            
             return _context.Transaction != null ? 
-                          View(transactionViewModel) :
+                          View(transactionTableViewModel) :
                           Problem("Entity set 'BudgetDataContext.Transaction'  is null.");
         }
 

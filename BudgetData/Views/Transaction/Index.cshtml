@@ -1,4 +1,4 @@
-@model BudgetData.Models.TransactionViewModel
+@model BudgetData.Models.TransactionsTableViewModel
 
 @{
     ViewData["Title"] = "Index";
@@ -9,62 +9,66 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<table class="table">
-    <thead>
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Transactions[0].DateOfTransaction)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Transactions[0].DescriptionOfTransaction)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Transactions[0].Budget)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Transactions[0].ValueOfTransaction)
-        </th>
-        <th></th>
-    </tr>
-    </thead>
-    <tbody>
-    @foreach (var item in Model.Transactions)
-    {
+@foreach (var transaction in Model.TransactionsPerCategories)
+{
+    <table class="table">
+        <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => transaction.Transactions[0].DateOfTransaction)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => transaction.Transactions[0].DescriptionOfTransaction)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => transaction.Transactions[0].Budget)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => transaction.Transactions[0].ValueOfTransaction)
+            </th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody>
+        @foreach (var item in transaction.Transactions)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateOfTransaction)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DescriptionOfTransaction)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Budget)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ValueOfTransaction)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+        </tbody>
+        <tfoot>
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.DateOfTransaction)
+                Summe:
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.DescriptionOfTransaction)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Budget)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ValueOfTransaction)
+                @Html.DisplayFor(abc => transaction.TotalSum) €
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>
-    }
-    </tbody>
-    <tfoot>
-    <tr>
-        <td>
-            Summe:
-        </td>
-        <td>
-        </td>
-        <td>
-        </td>
-        <td>
-            @Html.DisplayFor(abc => Model.TotalSum) €
-        </td>
-        <td>
-        </td>
-    </tr>
-    </tfoot>
-</table>
+        </tfoot>
+    </table>
+}
+Gesamtbetrag: @Html.DisplayFor(item => Model.TotalSum)
