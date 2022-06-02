@@ -1,4 +1,4 @@
-@model IEnumerable<BudgetData.Models.Transaction>
+@model BudgetData.Models.TransactionViewModel
 
 @{
     ViewData["Title"] = "Index";
@@ -13,22 +13,22 @@
     <thead>
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.DateOfTransaction)
+            @Html.DisplayNameFor(model => model.Transactions[0].DateOfTransaction)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.DescriptionOfTransaction)
+            @Html.DisplayNameFor(model => model.Transactions[0].DescriptionOfTransaction)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Budget)
+            @Html.DisplayNameFor(model => model.Transactions[0].Budget)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.ValueOfTransaction)
+            @Html.DisplayNameFor(model => model.Transactions[0].ValueOfTransaction)
         </th>
         <th></th>
     </tr>
     </thead>
     <tbody>
-    @foreach (var item in Model)
+    @foreach (var item in Model.Transactions)
     {
         <tr>
             <td>
@@ -61,7 +61,7 @@
         <td>
         </td>
         <td>
-            42
+            @Html.DisplayFor(abc => Model.TotalSum) €
         </td>
         <td>
         </td>
