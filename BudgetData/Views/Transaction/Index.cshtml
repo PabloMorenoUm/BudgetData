@@ -11,24 +11,25 @@
 </p>
 <table class="table">
     <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.DateOfTransaction)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DescriptionOfTransaction)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ValueOfTransaction)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Budget)
-            </th>
-            <th></th>
-        </tr>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.DateOfTransaction)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DescriptionOfTransaction)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Budget)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ValueOfTransaction)
+        </th>
+        <th></th>
+    </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+    @foreach (var item in Model)
+    {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.DateOfTransaction)
@@ -37,10 +38,10 @@
                 @Html.DisplayFor(modelItem => item.DescriptionOfTransaction)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ValueOfTransaction)
+                @Html.DisplayFor(modelItem => item.Budget)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Budget)
+                @Html.DisplayFor(modelItem => item.ValueOfTransaction)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
@@ -48,6 +49,22 @@
                 <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
             </td>
         </tr>
-}
+    }
     </tbody>
+    <tfoot>
+    <tr>
+        <td>
+            Summe:
+        </td>
+        <td>
+        </td>
+        <td>
+        </td>
+        <td>
+            42
+        </td>
+        <td>
+        </td>
+    </tr>
+    </tfoot>
 </table>
