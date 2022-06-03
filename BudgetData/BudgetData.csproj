@@ -29,4 +29,10 @@
       <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="6.0.5" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Content Update="wwwroot\music\2021_05_28_zug_ibk.mp3">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
+
 </Project>
