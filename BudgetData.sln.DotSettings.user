@@ -6,6 +6,8 @@
 &lt;/SessionState&gt;</s:String>
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=f9125676_002Dcea4_002D416d_002Db6b5_002D711323f83f7c/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="UnitTest1" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
   &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;xUnit::86F4E08C-8ECF-4C66-AEFB-387D7D34D223::net6.0::BudgetDataTest.UnitTest1&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::86F4E08C-8ECF-4C66-AEFB-387D7D34D223::net6.0::BudgetDataTest.TransactionTest.TransactionToString_shouldReturnFormattedString&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::86F4E08C-8ECF-4C66-AEFB-387D7D34D223::net6.0::BudgetDataTest.Controllers.TransactionControllerTest.Index_ShouldGenerateListOfDistinctBudgets&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;xUnit::86F4E08C-8ECF-4C66-AEFB-387D7D34D223::net6.0::BudgetDataTest.Controllers.TransactionControllerTest&lt;/TestId&gt;&#xD;
   &lt;/TestAncestor&gt;&#xD;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>
