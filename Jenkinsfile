@@ -2,6 +2,13 @@ def serviceName = "budget-data"
 def now = new Date()
 def timestamp = now.format("yyyyMMddHHmm", TimeZone.getTimeZone('Europe/Berlin'))
 pipeline {
+    environment {
+        DOCKER_IMAGE_NAME = "${serviceName}"
+        DOCKER_IMAGE_VERSION = "${timestamp}-${env.GIT_COMMIT}"
+        NEXUS_USERNAME = "admin"
+        NEXUS_PASSWORD = "admin123"
+    }
+
     agent any 
     options {
         skipStagesAfterUnstable()
@@ -46,9 +53,9 @@ pipeline {
                 '''
             }
         }
-        stage('Stage 1') {
+        stage('Publish') {
             steps {
-                echo 'Hello world!' 
+                sh "dotnet publish -p:InformationalVersion=${env.DOCKER_IMAGE_NAME}:${env.DOCKER_IMAGE_VERSION} -c=Release"
             }
         }
     }
