@@ -52,4 +52,14 @@ pipeline {
             }
         }
     }
+    post {
+        failure{
+            reportPipelineResultIfOfInterest("FAILURE")
+            imageCleanUp()
+        }
+        success{
+            reportPipelineResultIfOfInterest("SUCCESS")
+            imageCleanUp()
+        }
+    }
 }
