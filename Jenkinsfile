@@ -27,11 +27,20 @@ pipeline {
                 sh 'dotnet restore'
             }
         }
-        stage('Run tests') {
-            steps {
-                sh 'dotnet test --no-build --no-restore'
-            }
-        }
+        stage('Running unit tests') {
+        steps {
+          bat "dotnet add ${workspace}/BudgetDataTest/BudgetDataTest.csproj package JUnitTestLogger --version 1.1.0"
+          bat "dotnet test ${workspace}/BudgetDataTest/BudgetDataTest.csproj --logger \"junit;LogFilePath=\"${WORKSPACE}\"/TestResults/1.0.0.\"${env.BUILD_NUMBER}\"/results.xml\" --configuration release --collect \"Code coverage\""
+          powershell '''
+          $destinationFolder = \"$env:WORKSPACE/TestResults\"
+          if (!(Test-Path -path $destinationFolder)) {New-Item $destinationFolder -Type Directory}
+          $file = Get-ChildItem -Path \"$env:WORKSPACE/<path-to-Unit-testing-project>/<name-of-unit-test-project>/TestResults/*/*.coverage\"
+          $file | Rename-Item -NewName testcoverage.coverage
+          $renamedFile = Get-ChildItem -Path \"$env:WORKSPACE/<path-to-Unit-testing-project>/<name-of-unit-test-project>/TestResults/*/*.coverage\"
+          Copy-Item $renamedFile -Destination $destinationFolder
+          '''            
+        }        
+      }
         stage('Stage 1') {
             steps {
                 echo 'Hello world!' 
