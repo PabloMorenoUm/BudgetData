@@ -24,7 +24,7 @@ pipeline {
         }
         stage('Install dotnet packages') {
             steps {
-                sh 'dotnet restore ${workspace}/BudgetData.sln'
+                sh 'dotnet restore'
             }
         }
         stage('Running unit tests') {
