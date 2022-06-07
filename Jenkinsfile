@@ -31,7 +31,7 @@ pipeline {
         }
         stage('Install dotnet packages') {
             steps {
-                sh 'dotnet restore'
+                sh 'dotnet restore ${workspace}/BudgetData.sln'
             }
         }
         stage('Build package') {
