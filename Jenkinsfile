@@ -16,7 +16,7 @@ pipeline {
     stages {
         stage('Console output of basic informations') {
             steps {
-                sh 'cat /etc/issue'
+                sh "cat /etc/issue"
             }
         }
         stage ('Clean workspace') {
@@ -36,7 +36,7 @@ pipeline {
         }
         stage('Build package') {
             steps {
-                sh 'dotnet build --no-restore'
+                sh "dotnet build --no-restore"
             }
         }
         stage('Running unit tests') {
