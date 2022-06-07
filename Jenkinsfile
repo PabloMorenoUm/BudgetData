@@ -11,42 +11,28 @@ pipeline {
       }
       stage ('Git Checkout') {
         steps {
-          git branch: 'master', credentialsId: '', url: 'https://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@github.com/PabloMorenoUm/BudgetData'
+          git branch: 'master', credentialsId: 'pers-acc-tkn-2nd-usr-pwd', url: 'https://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@github.com/PabloMorenoUm/BudgetData'
         }
       }
       stage('Restore packages') {
         steps {
-          bat "dotnet restore ${workspace}\\<path-to-solution>\\<solution-project-name>.sln"
+          bat "dotnet restore ${workspace}\\BudgetData.sln"
         }
       }
       stage('Clean') {
         steps {
-          bat "msbuild.exe ${workspace}\\<path-to-solution\\<solution-project-name>.sln" /nologo /nr:false /p:platform=\"x64\" /p:configuration=\"release\" /t:clean"
-        }
-      }
-      stage('Increase version') {
-        steps {
-          echo "${env.BUILD_NUMBER}"
-          powershell '''
-          $xmlFileName = "<path-to-solution>\\<package-project-name>\\Package.appxmanifest"     
-          [xml]$xmlDoc = Get-Content $xmlFileName
-          $version = $xmlDoc.Package.Identity.Version
-          $trimmedVersion = $version -replace '.[0-9]+$', '.'
-          $xmlDoc.Package.Identity.Version = $trimmedVersion + ${env:BUILD_NUMBER}
-          echo 'New version:' $xmlDoc.Package.Identity.Version
-          $xmlDoc.Save($xmlFileName)
-          '''
+          bat "msbuild.exe ${workspace}\\BudgetData.sln /nologo /nr:false /p:platform=\"x64\" /p:configuration=\"release\" /t:clean"
         }
       }
       stage('Build') {
         steps {
-          bat "msbuild.exe ${workspace}\\<path-to-solution>\\<solution-name>.sln /nologo /nr:false  /p:platform=\"x64\" /p:configuration=\"release\" /p:PackageCertificateKeyFile=<path-to-certificate-file>.pfx /t:clean;restore;rebuild"
+          bat "msbuild.exe ${workspace}\\BudgetData.sln /nologo /nr:false  /p:platform=\"x64\" /p:configuration=\"release\" /p:PackageCertificateKeyFile=<path-to-certificate-file>.pfx /t:clean;restore;rebuild"
         }
       }
       stage('Running unit tests') {
         steps {
-          bat "dotnet add ${workspace}/<path-to-Unit-testing-project>/<name-of-unit-test-project>.csproj package JUnitTestLogger --version 1.1.0"
-          bat "dotnet test ${workspace}/<path-to-Unit-testing-project>/<name-of-unit-test-project>.csproj --logger \"junit;LogFilePath=\"${WORKSPACE}\"/TestResults/1.0.0.\"${env.BUILD_NUMBER}\"/results.xml\" --configuration release --collect \"Code coverage\""
+          bat "dotnet add ${workspace}/BudgetDataTest/BudgetDataTest.csproj package JUnitTestLogger --version 1.1.0"
+          bat "dotnet test ${workspace}/BudgetDataTest/BudgetDataTest.csproj --logger \"junit;LogFilePath=\"${WORKSPACE}\"/TestResults/1.0.0.\"${env.BUILD_NUMBER}\"/results.xml\" --configuration release --collect \"Code coverage\""
           powershell '''
           $destinationFolder = \"$env:WORKSPACE/TestResults\"
           if (!(Test-Path -path $destinationFolder)) {New-Item $destinationFolder -Type Directory}
