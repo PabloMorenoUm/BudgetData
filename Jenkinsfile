@@ -59,12 +59,4 @@ pipeline {
             }
         }
     }
-    post {
-        failure{
-            imageCleanUp()
-        }
-        success{
-            imageCleanUp()
-        }
-    }
 }
