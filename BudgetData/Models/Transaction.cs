@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.Globalization;
 using System.Numerics;
 
 namespace BudgetData.Models;
@@ -22,6 +23,7 @@ public class Transaction
 
     public override string ToString()
     {
-        return $"{DateOfTransaction:dd.MM.yyyy}\t {DescriptionOfTransaction}\t {ValueOfTransaction:C}";
+        FormattableString formattable = $"{DateOfTransaction:dd.MM.yyyy}\t {DescriptionOfTransaction}\t {ValueOfTransaction:C}";
+        return formattable.ToString(new CultureInfo("de-DE"));
     }
 }

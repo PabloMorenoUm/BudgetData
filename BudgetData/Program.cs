@@ -13,15 +13,6 @@ builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
-var defaultCulture = new CultureInfo("de-DE");
-var localizationOptions = new RequestLocalizationOptions
-{
-    DefaultRequestCulture = new RequestCulture(defaultCulture),
-    SupportedCultures = new List<CultureInfo> { defaultCulture },
-    SupportedUICultures = new List<CultureInfo> { defaultCulture }
-};
-app.UseRequestLocalization(localizationOptions);
-
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
