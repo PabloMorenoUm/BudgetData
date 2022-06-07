@@ -50,5 +50,11 @@ pipeline {
                 sh "dotnet publish -p:InformationalVersion=${env.DOCKER_IMAGE_NAME}:${env.DOCKER_IMAGE_VERSION} -c=Release"
             }
         }
+        stage ('Starting Deployment job') {
+        when {branch 'master'}
+            steps {
+                build job: 'Deployment/test_deployment', parameters: [[$class: 'StringParameterValue', name: 'RequestedVersion', value: "${env.DOCKER_IMAGE_VERSION}"], [$class: 'StringParameterValue', name: 'Service', value: "${env.DOCKER_IMAGE_NAME}"]], propagate: false, wait: false
+            }
+        }
     }
 }
