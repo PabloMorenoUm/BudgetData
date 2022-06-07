@@ -27,6 +27,11 @@ pipeline {
                 sh 'dotnet restore'
             }
         }
+        stage('Run tests') {
+            steps {
+                sh 'dotnet test --no-build --no-restore'
+            }
+        }
         stage('Stage 1') {
             steps {
                 echo 'Hello world!' 
