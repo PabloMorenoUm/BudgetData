@@ -1,24 +1,32 @@
+def serviceName = "budget-data"
+def now = new Date()
+def timestamp = now.format("yyyyMMddHHmm", TimeZone.getTimeZone('Europe/Berlin'))
 pipeline {
     agent any 
     options {
         skipStagesAfterUnstable()
     }
     stages {
-      stage ('Clean workspace') {
-        steps {
-          cleanWs()
+        stage('Console output of basic informations') {
+            steps {
+                sh 'cat /etc/issue'
+            }
         }
-      }
-      stage ('Git Checkout') {
-        steps {
-          git branch: 'master', credentialsId: 'pers-acc-tkn-2nd-usr-pwd', url: 'https://github.com/PabloMorenoUm/BudgetData'
+        stage ('Clean workspace') {
+            steps {
+                cleanWs()
+            }
         }
-      }
-      stage('Restore packages') {
-        steps {
-          sh "dotnet restore ${workspace}/BudgetData.sln"
+        stage ('Git Checkout') {
+            steps {
+                git branch: 'master', credentialsId: 'pers-acc-tkn-2nd-usr-pwd', url: 'https://github.com/PabloMorenoUm/BudgetData'
+            }
         }
-      }
+        stage('Restore packages') {
+            steps {
+                sh "dotnet restore"
+            }
+        }
         stage('Stage 1') {
             steps {
                 echo 'Hello world!' 
