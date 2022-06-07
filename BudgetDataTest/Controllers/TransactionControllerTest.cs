@@ -13,39 +13,41 @@ using Xunit;
 
 namespace BudgetDataTest.Controllers;
 
-public class TransactionControllerTest
+public class TransactionControllerTest : IClassFixture<DatabaseFixture>
 {
-    [Fact]
-    public void Index_ShouldCalculateTotalSumOfAllTransactions()
+    DatabaseFixture _fixture;
+    TransactionsTableViewModel table;
+
+    public TransactionControllerTest(DatabaseFixture fixture)
     {
-        //arrange
-        var options = new DbContextOptionsBuilder<BudgetDataContext>()
-            .UseInMemoryDatabase(databaseName: "BudgetDatabase")
-            .Options;
+        this._fixture = fixture;
 
-        using (var context = new BudgetDataContext(options))
-        {
-            context.Transaction.Add(new Transaction()
-                {Id = 1, DescriptionOfTransaction = ".", Budget = "Kategorie1", ValueOfTransaction = (decimal) 20.20});
-            context.Transaction.Add(new Transaction()
-                {Id = 2, DescriptionOfTransaction = ".", Budget = "Kategorie1", ValueOfTransaction = (decimal) 200});
-            context.Transaction.Add(new Transaction()
-                {Id = 3, DescriptionOfTransaction = ".", Budget = "Kategorie2", ValueOfTransaction = (decimal) 2.02});
-            context.SaveChanges();
-        }
-
-
-        //act
-        TransactionsTableViewModel table;
-        using (var context = new BudgetDataContext(options))
+        using (var context = new BudgetDataContext(_fixture.Options))
         {
             TransactionController transactionController = new TransactionController(context);
             var view = transactionController.Index().Result as ViewResult;
             table = (TransactionsTableViewModel) view.ViewData.Model;
         }
-        
+    }
 
-        //assert
+    [Fact]
+    public void Index_ShouldCalculateTotalSumOfAllTransactions()
+    {
         table.TotalSum.Should().Be((decimal) 222.22);
+    }
+
+    [Fact]
+    public void Index_ShouldContainTwoDistinctBudgets()
+    {
+        table.TransactionsPerCategories.Count.Should().Be(2);
+    }
+
+    [Fact]
+    public void Index_ShouldCalculateSubtotalSumOfAnyBudget()
+    {
+        table.TransactionsPerCategories[0].TotalSum.Should().Be((decimal) 220.20);
+        table.TransactionsPerCategories[0].Transactions.Count.Should().Be(2);
+        table.TransactionsPerCategories[1].TotalSum.Should().Be((decimal) 2.02);
+        table.TransactionsPerCategories[1].Transactions.Count.Should().Be(1);
     }
 }
