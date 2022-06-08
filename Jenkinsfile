@@ -9,10 +9,23 @@ pipeline {
         NEXUS_PASSWORD = "admin123"
     }
 
-    agent any 
     options {
         skipStagesAfterUnstable()
     }
+    
+    agent {
+        docker {
+            image 'dotnet-build-image'
+            registryUrl "https://${env.NEXUS_REGISTRY}"
+            registryCredentialsId 'nexus-credentials'
+            args "--name ${serviceName}-dotnet-build --cpus=1 --memory=4g"
+        }
+    }
+
+    triggers {
+        pollSCM('H/5 * * * *')
+    }
+
     stages {
         stage('Console output of basic informations') {
             steps {
@@ -50,5 +63,14 @@ pipeline {
                 sh "dotnet publish -p:InformationalVersion=${env.DOCKER_IMAGE_NAME}:${env.DOCKER_IMAGE_VERSION} -c=Release"
             }
         }
+        
+        stage('Docker build') {
+            when { branch 'master'}
+            steps {
+                sh "echo ${env.DOCKER_IMAGE_NAME}:${env.DOCKER_IMAGE_VERSION} > version.txt"
+                sh "docker build -f Dockerfile.run -t ${env.NEXUS_REGISTRY}/${env.DOCKER_IMAGE_NAME}:${env.DOCKER_IMAGE_VERSION} ."
+            }
+        }
+
     }
 }
