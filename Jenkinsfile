@@ -16,8 +16,8 @@ pipeline {
     agent {
         docker {
             image 'dotnet-build-image'
-            registryUrl "https://${env.NEXUS_REGISTRY}"
-            registryCredentialsId 'nexus-credentials'
+            // registryUrl "https://${env.NEXUS_REGISTRY}"
+            // registryCredentialsId 'nexus-credentials'
             args "--name ${serviceName}-dotnet-build --cpus=1 --memory=4g"
         }
     }
