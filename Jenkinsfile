@@ -61,7 +61,6 @@ pipeline {
             when { branch 'master'}
             steps {
                 sh "echo ${env.DOCKER_IMAGE_NAME}:${env.DOCKER_IMAGE_VERSION} > version.txt"
-                sh "docker build -f Dockerfile.run -t ${env.NEXUS_REGISTRY}/${env.DOCKER_IMAGE_NAME}:${env.DOCKER_IMAGE_VERSION} ."
             }
         }
 
