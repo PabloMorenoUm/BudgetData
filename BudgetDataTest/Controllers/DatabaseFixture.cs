@@ -19,11 +19,11 @@ public class DatabaseFixture : IDisposable
         using (var context = new BudgetDataContext(Options))
         {
             context.Transaction!.Add(new Transaction()
-                {Id = 1, DescriptionOfTransaction = ".", Budget = "Budget1", ValueOfTransaction = (decimal) 20.20});
+                {Id = 1, DescriptionOfTransaction = "abc", Budget = "Budget1", ValueOfTransaction = (decimal) 20.20});
             context.Transaction.Add(new Transaction()
-                {Id = 2, DescriptionOfTransaction = ".", Budget = "Budget1", ValueOfTransaction = (decimal) 200});
+                {Id = 2, DescriptionOfTransaction = "bcd", Budget = "Budget1", ValueOfTransaction = (decimal) 200});
             context.Transaction.Add(new Transaction()
-                {Id = 3, DescriptionOfTransaction = ".", Budget = "Budget2", ValueOfTransaction = (decimal) 2.02});
+                {Id = 3, DescriptionOfTransaction = "cde", Budget = "Budget2", ValueOfTransaction = (decimal) 2.02});
             context.SaveChanges();
         }
     }

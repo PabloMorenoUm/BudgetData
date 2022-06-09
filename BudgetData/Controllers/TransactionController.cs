@@ -21,25 +21,34 @@ namespace BudgetData.Controllers
         }
 
         // GET: Transaction
-        public async Task<IActionResult> Index(string budgetFilter)
+        public async Task<IActionResult> Index(string budgetFilter, string searchString)
         {
-            var transactions = await (from m in _context.Transaction
-                select m).ToListAsync();
-            var budgets = transactions.Select(transactions => transactions.Budget).Distinct();
+            var transactions = from m in _context.Transaction
+                select m;
+            
+            var allBudgets = transactions.Select(transaction => transaction.Budget).Distinct();
 
             var transactionTableViewModel = new TransactionsTableViewModel()
             {
                 TotalSum = 0,
                 TransactionsPerCategories = new List<TransactionsPerCategory>(),
-                Budgets = new SelectList(budgets.ToList().Append(budgetCatAll).OrderBy(i => i))
+                Budgets = new SelectList(allBudgets.ToList().Append(budgetCatAll).OrderBy(i => i))
             };
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                transactions = transactions.Where(transaction =>
+                    transaction.DescriptionOfTransaction.Contains(searchString));
+            }
+            
+            var filteredBudgets = transactions.Select(transaction => transaction.Budget).Distinct();
             
             if (!String.IsNullOrEmpty(budgetFilter) && budgetFilter != budgetCatAll)
             {
-                budgets = budgets.Where(budget => budget == budgetFilter);
+                filteredBudgets = filteredBudgets.Where(budget => budget == budgetFilter);
             }
             
-            foreach (var budget in budgets)
+            foreach (var budget in filteredBudgets)
             {
                 var _transactions = transactions.Where(transactions => transactions.Budget == budget);
                 var _totalSum = _transactions.Select(t => t.ValueOfTransaction).Sum();

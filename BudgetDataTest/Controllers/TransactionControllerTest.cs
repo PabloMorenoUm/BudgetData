@@ -23,12 +23,12 @@ public class TransactionControllerTest : IClassFixture<DatabaseFixture>
         this._fixture = fixture;
     }
 
-    private void createViewDataModel(string? budgetFilter = null)
+    private void createViewDataModel(string? budgetFilter = null, string? searchString = null)
     {
         using (var context = new BudgetDataContext(_fixture.Options))
         {
             TransactionController transactionController = new TransactionController(context);
-            var view = transactionController.Index(budgetFilter).Result as ViewResult;
+            var view = transactionController.Index(budgetFilter, searchString).Result as ViewResult;
             table = (TransactionsTableViewModel)view.ViewData.Model;
         }
     }
@@ -62,5 +62,30 @@ public class TransactionControllerTest : IClassFixture<DatabaseFixture>
     {
         createViewDataModel("Budget1");
         table.TransactionsPerCategories.Count.Should().Be(1);
+        table.TotalSum.Should().Be((decimal) 220.20);
+    }
+
+    [Fact]
+    public void IndexWithFilter_ShouldContainAllBudgets()
+    {
+        createViewDataModel("Alle");
+        table.TransactionsPerCategories.Count.Should().Be(2);
+        table.TotalSum.Should().Be((decimal) 222.22);
+    }
+
+    [Fact]
+    public void IndexWithSearch_ShouldContainMatchingTransactions()
+    {
+        createViewDataModel(searchString: "cd");
+        table.TransactionsPerCategories.Count.Should().Be(2);
+        table.TransactionsPerCategories[0].Transactions.Count.Should().Be(1);
+    }
+
+    [Fact]
+    public void IndexWithFilterAndSearch_ShouldContainMatchingTransactions()
+    {
+        createViewDataModel("Budget1", "cd");
+        table.TransactionsPerCategories.Count.Should().Be(1);
+        table.TransactionsPerCategories[0].Transactions.Count.Should().Be(1);
     }
 }
