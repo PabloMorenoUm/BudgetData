@@ -1,13 +1,8 @@
 ﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
-	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=ad8ebf64_002D470d_002D4e38_002D9567_002D4f84926e8d48/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" Name="Test1" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;xUnit::86F4E08C-8ECF-4C66-AEFB-387D7D34D223::net6.0::BudgetDataTest.UnitTest1.Test1&lt;/TestId&gt;&#xD;
-  &lt;/TestAncestor&gt;&#xD;
-&lt;/SessionState&gt;</s:String>
+	<s:String x:Key="/Default/Environment/AssemblyExplorer/XmlDocument/@EntryValue">&lt;AssemblyExplorer&gt;&#xD;
+  &lt;Assembly Path="C:\Users\pablo.morenoum\.nuget\packages\microsoft.codecoverage\16.11.0\lib\netcoreapp1.0\Microsoft.VisualStudio.CodeCoverage.Shim.dll" /&gt;&#xD;
+&lt;/AssemblyExplorer&gt;</s:String>
+	
 	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=f9125676_002Dcea4_002D416d_002Db6b5_002D711323f83f7c/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="UnitTest1" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
-  &lt;TestAncestor&gt;&#xD;
-    &lt;TestId&gt;xUnit::86F4E08C-8ECF-4C66-AEFB-387D7D34D223::net6.0::BudgetDataTest.TransactionTest.TransactionToString_shouldReturnFormattedString&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::86F4E08C-8ECF-4C66-AEFB-387D7D34D223::net6.0::BudgetDataTest.Controllers.TransactionControllerTest.Index_ShouldGenerateListOfDistinctBudgets&lt;/TestId&gt;&#xD;
-    &lt;TestId&gt;xUnit::86F4E08C-8ECF-4C66-AEFB-387D7D34D223::net6.0::BudgetDataTest.Controllers.TransactionControllerTest&lt;/TestId&gt;&#xD;
-  &lt;/TestAncestor&gt;&#xD;
+  &lt;Solution /&gt;&#xD;
 &lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>

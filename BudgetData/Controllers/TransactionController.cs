@@ -13,6 +13,7 @@ namespace BudgetData.Controllers
     public class TransactionController : Controller
     {
         private readonly BudgetDataContext _context;
+        private const string budgetCatAll = "Alle";
 
         public TransactionController(BudgetDataContext context)
         {
@@ -20,7 +21,7 @@ namespace BudgetData.Controllers
         }
 
         // GET: Transaction
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(string budgetFilter)
         {
             var transactions = await (from m in _context.Transaction
                 select m).ToListAsync();
@@ -29,8 +30,14 @@ namespace BudgetData.Controllers
             var transactionTableViewModel = new TransactionsTableViewModel()
             {
                 TotalSum = 0,
-                TransactionsPerCategories = new List<TransactionsPerCategory>()
+                TransactionsPerCategories = new List<TransactionsPerCategory>(),
+                Budgets = new SelectList(budgets.ToList().Append(budgetCatAll).OrderBy(i => i))
             };
+            
+            if (!String.IsNullOrEmpty(budgetFilter) && budgetFilter != budgetCatAll)
+            {
+                budgets = budgets.Where(budget => budget == budgetFilter);
+            }
             
             foreach (var budget in budgets)
             {

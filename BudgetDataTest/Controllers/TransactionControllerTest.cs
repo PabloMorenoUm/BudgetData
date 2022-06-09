@@ -21,33 +21,46 @@ public class TransactionControllerTest : IClassFixture<DatabaseFixture>
     public TransactionControllerTest(DatabaseFixture fixture)
     {
         this._fixture = fixture;
+    }
 
+    private void createViewDataModel(string? budgetFilter = null)
+    {
         using (var context = new BudgetDataContext(_fixture.Options))
         {
             TransactionController transactionController = new TransactionController(context);
-            var view = transactionController.Index().Result as ViewResult;
-            table = (TransactionsTableViewModel) view.ViewData.Model;
+            var view = transactionController.Index(budgetFilter).Result as ViewResult;
+            table = (TransactionsTableViewModel)view.ViewData.Model;
         }
     }
 
     [Fact]
     public void Index_ShouldCalculateTotalSumOfAllTransactions()
     {
+        createViewDataModel();
         table.TotalSum.Should().Be((decimal) 222.22);
     }
 
     [Fact]
     public void Index_ShouldContainTwoDistinctBudgets()
     {
+        createViewDataModel();
         table.TransactionsPerCategories.Count.Should().Be(2);
     }
 
     [Fact]
     public void Index_ShouldCalculateSubtotalSumOfAnyBudget()
     {
+        createViewDataModel();
         table.TransactionsPerCategories[0].TotalSum.Should().Be((decimal) 220.20);
         table.TransactionsPerCategories[0].Transactions.Count.Should().Be(2);
         table.TransactionsPerCategories[1].TotalSum.Should().Be((decimal) 2.02);
         table.TransactionsPerCategories[1].Transactions.Count.Should().Be(1);
+    }
+
+    [Fact]
+    public void IndexWithFilter_ShouldContainOneBudget()
+    {
+        createViewDataModel("Budget1");
+        table.TransactionsPerCategories.Count.Should().Be(1);
     }
 }

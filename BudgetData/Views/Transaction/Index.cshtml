@@ -9,6 +9,16 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+
+<form asp-controller="Transaction" asp-action="Index" method="get">
+    <p>
+        <select asp-for="BudgetFilter" asp-items="Model.Budgets">
+            Geld
+        </select>
+        <input type="submit"/>
+    </p>
+</form>
+
 @foreach (var transaction in Model.TransactionsPerCategories)
 {
     <table class="table">
