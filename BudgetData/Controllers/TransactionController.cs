@@ -1,9 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BudgetData.Data;
 using BudgetData.Models;
@@ -13,56 +8,24 @@ namespace BudgetData.Controllers
     public class TransactionController : Controller
     {
         private readonly BudgetDataContext _context;
-        private const string budgetCatAll = "Alle";
+        private readonly TransactionService _transactionService;
 
         public TransactionController(BudgetDataContext context)
         {
             _context = context;
+            _transactionService = new TransactionService(_context);
         }
 
         // GET: Transaction
         public async Task<IActionResult> Index(string budgetFilter, string searchString)
         {
-            var transactions = from m in _context.Transaction
-                select m;
             
-            var allBudgets = transactions.Select(transaction => transaction.Budget).Distinct();
-
-            var transactionTableViewModel = new TransactionsTableViewModel()
-            {
-                TotalSum = 0,
-                TransactionsPerCategories = new List<TransactionsPerCategory>(),
-                Budgets = new SelectList(allBudgets.ToList().Append(budgetCatAll).OrderBy(i => i))
-            };
-
-            if (!String.IsNullOrEmpty(searchString))
-            {
-                transactions = transactions.Where(transaction =>
-                    transaction.DescriptionOfTransaction.Contains(searchString));
-            }
-            
-            var filteredBudgets = transactions.Select(transaction => transaction.Budget).Distinct();
-            
-            if (!String.IsNullOrEmpty(budgetFilter) && budgetFilter != budgetCatAll)
-            {
-                filteredBudgets = filteredBudgets.Where(budget => budget == budgetFilter);
-            }
-            
-            foreach (var budget in filteredBudgets)
-            {
-                var _transactions = transactions.Where(transactions => transactions.Budget == budget);
-                var _totalSum = _transactions.Select(t => t.ValueOfTransaction).Sum();
-                var transactionsPerCategory = new TransactionsPerCategory()
-                {
-                    Transactions = _transactions.ToList(),
-                    TotalSum = _totalSum
-                };
-                transactionTableViewModel.TransactionsPerCategories.Add(transactionsPerCategory);
-                transactionTableViewModel.TotalSum += transactionsPerCategory.TotalSum;
-            }
+            _transactionService.SearchTransactionsByDescription(searchString);
+            var filteredBudgets = _transactionService.FilterTransactionsByBudgets(budgetFilter);
+            _transactionService.GenerateTablesPerBudget(filteredBudgets);
             
             return _context.Transaction != null ? 
-                          View(transactionTableViewModel) :
+                          View(_transactionService.TransactionsTableViewModel) :
                           Problem("Entity set 'BudgetDataContext.Transaction'  is null.");
         }
 
