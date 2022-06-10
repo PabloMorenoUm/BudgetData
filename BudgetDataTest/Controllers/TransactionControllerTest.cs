@@ -10,6 +10,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Moq;
 using Xunit;
+using Xunit.Abstractions;
 
 namespace BudgetDataTest.Controllers;
 
@@ -74,7 +75,7 @@ public class TransactionControllerTest : IClassFixture<DatabaseFixture>
     }
 
     [Fact]
-    public void IndexWithSearch_ShouldContainMatchingTransactions()
+    public void AIndexWithSearch_ShouldContainMatchingTransactions()
     {
         CreateViewDataModel(searchString: "cd");
         _table.TransactionsPerCategories.Count.Should().Be(2);

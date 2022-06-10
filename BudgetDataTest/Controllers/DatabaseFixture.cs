@@ -1,7 +1,6 @@
 using System;
 using BudgetData.Data;
 using BudgetData.Models;
-using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
 namespace BudgetDataTest.Controllers;
@@ -30,6 +29,11 @@ public class DatabaseFixture : IDisposable
 
     public void Dispose()
     {
-        // ... clean up test data from the database ...
+        // using (var context = new BudgetDataContext(Options))
+        // {
+        //     IEnumerable<Transaction> DbSet = context.Transaction.ToList();
+        //     context.Transaction.RemoveRange(DbSet);
+        //     context.SaveChanges();
+        // }
     }
 }

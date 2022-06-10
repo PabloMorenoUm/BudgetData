@@ -9,17 +9,19 @@ public class TransactionService
     public const string BudgetCategoryAll = "Alle";
     
     private IQueryable<Transaction> _transactions;
-    public TransactionsTableViewModel TransactionsTableViewModel { get; }
+    private IQueryable<string> _budgets;
+    private readonly TransactionsTableViewModel _transactionsTableViewModel;
 
     public TransactionService(BudgetDataContext context)
     {
         _transactions = from m in context.Transaction select m;
-        var allBudgets = _transactions.Select(transaction => transaction.Budget).Distinct();
-        TransactionsTableViewModel = new TransactionsTableViewModel
+        _budgets = _transactions.Select(transaction => transaction.Budget).Distinct();
+        
+        _transactionsTableViewModel = new TransactionsTableViewModel
         {
             TotalSum = 0,
             TransactionsPerCategories = new List<TransactionsPerCategory>(),
-            Budgets = new SelectList(allBudgets.ToList().Append(BudgetCategoryAll).OrderBy(i => i))
+            Budgets = new SelectList(_budgets.ToList().Append(BudgetCategoryAll).OrderBy(i => i))
         };
     }
 
@@ -32,21 +34,15 @@ public class TransactionService
         }
     }
 
-    public IQueryable<string> FilterTransactionsByBudgets(string budgetFilter)
+    public void FilterBudgets(string budgetFilter)
     {
-        var filteredBudgets = _transactions.Select(transaction => transaction.Budget).Distinct();
-            
-        if (!string.IsNullOrEmpty(budgetFilter) && budgetFilter != BudgetCategoryAll)
-        {
-            filteredBudgets = filteredBudgets.Where(budget => budget == budgetFilter);
-        }
-
-        return filteredBudgets;
+        if (string.IsNullOrEmpty(budgetFilter) || budgetFilter == BudgetCategoryAll) return;
+        _budgets = _budgets.Where(budget => budget == budgetFilter);
     }
 
-    public void GenerateTablesPerBudget(IQueryable<string> filteredBudgets)
+    public TransactionsTableViewModel GenerateTablesPerBudget()
     {
-        foreach (var budget in filteredBudgets)
+        foreach (var budget in _budgets)
         {
             var transactions = _transactions.Where(transactions => transactions.Budget == budget);
             var totalSum = transactions.Select(t => t.ValueOfTransaction).Sum();
@@ -55,8 +51,10 @@ public class TransactionService
                 Transactions = transactions.ToList(),
                 TotalSum = totalSum
             };
-            TransactionsTableViewModel.TransactionsPerCategories.Add(transactionsPerCategory);
-            TransactionsTableViewModel.TotalSum += totalSum;
+            _transactionsTableViewModel.TransactionsPerCategories.Add(transactionsPerCategory);
+            _transactionsTableViewModel.TotalSum += totalSum;
         }
+
+        return _transactionsTableViewModel;
     }
 }

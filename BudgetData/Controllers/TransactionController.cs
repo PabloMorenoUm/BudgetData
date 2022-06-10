@@ -21,11 +21,10 @@ namespace BudgetData.Controllers
         {
             
             _transactionService.SearchTransactionsByDescription(searchString);
-            var filteredBudgets = _transactionService.FilterTransactionsByBudgets(budgetFilter);
-            _transactionService.GenerateTablesPerBudget(filteredBudgets);
+            _transactionService.FilterBudgets(budgetFilter);
             
             return _context.Transaction != null ? 
-                          View(_transactionService.TransactionsTableViewModel) :
+                          View(_transactionService.GenerateTablesPerBudget()) :
                           Problem("Entity set 'BudgetDataContext.Transaction'  is null.");
         }
 
