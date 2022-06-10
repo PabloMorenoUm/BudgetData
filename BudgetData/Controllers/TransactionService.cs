@@ -6,7 +6,7 @@ namespace BudgetData.Controllers;
 
 public class TransactionService
 {
-    private const string BudgetCategoryAll = "Alle";
+    public const string BudgetCategoryAll = "Alle";
     
     private IQueryable<Transaction> _transactions;
     public TransactionsTableViewModel TransactionsTableViewModel { get; }
