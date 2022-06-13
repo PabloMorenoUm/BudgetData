@@ -2,7 +2,7 @@ using BudgetData.Data;
 using BudgetData.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
 
-namespace BudgetData.Controllers;
+namespace BudgetData.Services;
 
 public class TransactionService
 {
@@ -27,12 +27,10 @@ public class TransactionService
 
     public void SearchTransactionsByDescription(string searchString)
     {
-        if (!string.IsNullOrEmpty(searchString))
-        {
-            _transactions = _transactions.Where(transaction =>
-                transaction.DescriptionOfTransaction.Contains(searchString));
-            _budgets = GetBudgetsFromTransactions();
-        }
+        if (string.IsNullOrEmpty(searchString)) return;
+        _transactions = _transactions.Where(transaction =>
+            transaction.DescriptionOfTransaction.Contains(searchString));
+        _budgets = GetBudgetsFromTransactions();
     }
 
     public void FilterBudgets(string budgetFilter)

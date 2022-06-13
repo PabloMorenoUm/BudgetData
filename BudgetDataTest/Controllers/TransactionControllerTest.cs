@@ -3,6 +3,7 @@ using System.Linq;
 using BudgetData.Controllers;
 using BudgetData.Data;
 using BudgetData.Models;
+using BudgetData.Services;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;

@@ -1,4 +1,4 @@
-@model dynamic
+@model BudgetData.Models.Kassensturz
 
 @{
     ViewBag.Title = "Kassensturz";
@@ -6,16 +6,19 @@
 }
 
 <h2>Kassensturz</h2>
-<form asp-action="Kassensturz" method="get">
+<form asp-action="Kassensturz" method="post">
     <div class="form-group">
-        <label for="Kontostand" class="control-label">a</label>
-        <input id="Kontostand" type="text" class="form-control"/>
+        <label for="Kontostand" class="control-label">Konto</label>
+        <input asp-for="Konto" id="Kontostand" type="text" class="form-control"/>
     </div>
     <div class="form-group">
-        <label for="Bargeldbestand" class="control-label">b</label>
-        <input type="text" class="form-control"/>
+        <label for="Bargeldbestand" class="control-label">Bargeld</label>
+        <input asp-for="Bargeld" type="text" class="form-control"/>
     </div>
     <div class="form-group">
         <input type="submit" value="Check" class="btn btn-primary"/>
     </div>
+    asdf
+    @Html.DisplayFor(item => Model.Difference)
+    qwer
 </form>
