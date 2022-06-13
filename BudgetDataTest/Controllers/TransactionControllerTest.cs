@@ -38,23 +38,23 @@ public class TransactionControllerTest : IClassFixture<DatabaseFixture>
     public void Index_ShouldCalculateTotalSumOfAllTransactions()
     {
         CreateViewDataModel();
-        _table.TotalSum.Should().Be((decimal)222.22);
+        _table.TotalSum.Should().Be((decimal)11.11);
     }
 
     [Fact]
-    public void Index_ShouldContainTwoDistinctBudgets()
+    public void Index_ShouldContainThreeDistinctBudgets()
     {
         CreateViewDataModel();
-        _table.TransactionsPerCategories.Count.Should().Be(2);
+        _table.TransactionsPerCategories.Count.Should().Be(3);
     }
 
     [Fact]
     public void Index_ShouldCalculateSubtotalSumOfAnyBudget()
     {
         CreateViewDataModel();
-        _table.TransactionsPerCategories[0].TotalSum.Should().Be((decimal)220.20);
+        _table.TransactionsPerCategories[0].TotalSum.Should().Be((decimal)0.11);
         _table.TransactionsPerCategories[0].Transactions.Count.Should().Be(2);
-        _table.TransactionsPerCategories[1].TotalSum.Should().Be((decimal)2.02);
+        _table.TransactionsPerCategories[1].TotalSum.Should().Be((decimal)1.00);
         _table.TransactionsPerCategories[1].Transactions.Count.Should().Be(1);
     }
 
@@ -63,19 +63,19 @@ public class TransactionControllerTest : IClassFixture<DatabaseFixture>
     {
         CreateViewDataModel("Budget1");
         _table.TransactionsPerCategories.Count.Should().Be(1);
-        _table.TotalSum.Should().Be((decimal)220.20);
+        _table.TotalSum.Should().Be((decimal)0.11);
     }
 
     [Fact]
     public void IndexWithFilter_ShouldContainAllBudgets()
     {
         CreateViewDataModel("Alle");
-        _table.TransactionsPerCategories.Count.Should().Be(2);
-        _table.TotalSum.Should().Be((decimal)222.22);
+        _table.TransactionsPerCategories.Count.Should().Be(3);
+        _table.TotalSum.Should().Be((decimal)11.11);
     }
 
     [Fact]
-    public void AIndexWithSearch_ShouldContainMatchingTransactions()
+    public void IndexWithSearch_ShouldContainMatchingTransactions()
     {
         CreateViewDataModel(searchString: "cd");
         _table.TransactionsPerCategories.Count.Should().Be(2);
@@ -100,7 +100,7 @@ public class TransactionControllerTest : IClassFixture<DatabaseFixture>
             var transactionController = new TransactionController(context);
             var transaction = new Transaction
             {
-                Id = 42,
+                Id = 99,
                 DescriptionOfTransaction = "Description",
                 Budget = budgetName,
                 ValueOfTransaction = 123
@@ -122,7 +122,6 @@ public class TransactionControllerTest : IClassFixture<DatabaseFixture>
             var transactionController = new TransactionController(context);
             var transaction = new Transaction
             {
-                Id = 4,
                 DescriptionOfTransaction = "Description",
                 Budget = budgetName,
                 ValueOfTransaction = 123

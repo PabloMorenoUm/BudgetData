@@ -15,7 +15,7 @@ public class TransactionService
     public TransactionService(BudgetDataContext context)
     {
         _transactions = from m in context.Transaction select m;
-        _budgets = _transactions.Select(transaction => transaction.Budget).Distinct();
+        _budgets = GetBudgetsFromTransactions();
         
         _transactionsTableViewModel = new TransactionsTableViewModel
         {
@@ -31,6 +31,7 @@ public class TransactionService
         {
             _transactions = _transactions.Where(transaction =>
                 transaction.DescriptionOfTransaction.Contains(searchString));
+            _budgets = GetBudgetsFromTransactions();
         }
     }
 
@@ -56,5 +57,10 @@ public class TransactionService
         }
 
         return _transactionsTableViewModel;
+    }
+
+    private IQueryable<string> GetBudgetsFromTransactions()
+    {
+        return _transactions.Select(transaction => transaction.Budget).Distinct();
     }
 }

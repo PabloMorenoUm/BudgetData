@@ -18,22 +18,21 @@ public class DatabaseFixture : IDisposable
         using (var context = new BudgetDataContext(Options))
         {
             context.Transaction!.Add(new Transaction()
-                {Id = 1, DescriptionOfTransaction = "abc", Budget = "Budget1", ValueOfTransaction = (decimal) 20.20});
+                {DescriptionOfTransaction = "abc", Budget = "Budget1", ValueOfTransaction = (decimal) 0.01});
             context.Transaction.Add(new Transaction()
-                {Id = 2, DescriptionOfTransaction = "bcd", Budget = "Budget1", ValueOfTransaction = (decimal) 200});
+                {DescriptionOfTransaction = "bcd", Budget = "Budget1", ValueOfTransaction = (decimal) 0.10});
             context.Transaction.Add(new Transaction()
-                {Id = 3, DescriptionOfTransaction = "cde", Budget = "Budget2", ValueOfTransaction = (decimal) 2.02});
+                {DescriptionOfTransaction = "cde", Budget = "Budget2", ValueOfTransaction = (decimal) 1.00});
+            context.Transaction.Add(new Transaction()
+                {DescriptionOfTransaction = "xyz", Budget = "Hifi", ValueOfTransaction = (decimal) 10.00});
             context.SaveChanges();
         }
     }
 
     public void Dispose()
     {
-        // using (var context = new BudgetDataContext(Options))
-        // {
-        //     IEnumerable<Transaction> DbSet = context.Transaction.ToList();
-        //     context.Transaction.RemoveRange(DbSet);
-        //     context.SaveChanges();
-        // }
+        using (var context = new BudgetDataContext(Options))
+        {
+        }
     }
 }
