@@ -15,10 +15,20 @@
         <label for="Bargeldbestand" class="control-label">Bargeld</label>
         <input asp-for="Bargeld" type="text" class="form-control"/>
     </div>
+    <br/>
     <div class="form-group">
         <input type="submit" value="Check" class="btn btn-primary"/>
     </div>
-    asdf
-    @Html.DisplayFor(item => Model.Difference)
-    qwer
+    <br/>
+    <div class="text-center">
+        @if (Model != null)
+        {
+            <p>
+                Die Differenz der gerade eingegebenen Werte vom Gesamtbetrag der Kontobewegungen beträgt
+                @Html.DisplayFor(item => Model.Difference)
+                .
+            </p>
+        }
+
+    </div>
 </form>
