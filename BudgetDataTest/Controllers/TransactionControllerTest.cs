@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using BudgetData.Controllers;
 using BudgetData.Data;
@@ -8,39 +6,50 @@ using BudgetData.Models;
 using FluentAssertions;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Infrastructure;
-using Moq;
 using Xunit;
-using Xunit.Abstractions;
 
 namespace BudgetDataTest.Controllers;
 
-public class TransactionControllerTest : IClassFixture<DatabaseFixture>, IDisposable
+public class TransactionControllerTest : IDisposable
 {
-    DatabaseFixture _fixture;
+    DbContextOptions<BudgetDataContext> Options { get; }
     TransactionsTableViewModel _table;
 
-    public TransactionControllerTest(DatabaseFixture fixture)
+    public TransactionControllerTest()
     {
-        _fixture = fixture;
+        Options = new DbContextOptionsBuilder<BudgetDataContext>()
+            .UseInMemoryDatabase(databaseName: "BudgetDatabase")
+            .Options;
+
+        using (var context = new BudgetDataContext(Options))
+        {
+            context.Transaction!.Add(new Transaction()
+                {DescriptionOfTransaction = "abc", Budget = "Budget1", ValueOfTransaction = (decimal) 0.01});
+            context.Transaction.Add(new Transaction()
+                {DescriptionOfTransaction = "bcd", Budget = "Budget1", ValueOfTransaction = (decimal) 0.10});
+            context.Transaction.Add(new Transaction()
+                {DescriptionOfTransaction = "cde", Budget = "Budget2", ValueOfTransaction = (decimal) 1.00});
+            context.Transaction.Add(new Transaction()
+                {DescriptionOfTransaction = "xyz", Budget = "Hifi", ValueOfTransaction = (decimal) 10.00});
+            context.SaveChanges();
+        }
     }
 
     private void CreateViewDataModel(string? budgetFilter = null, string? searchString = null)
     {
-        using (var context = new BudgetDataContext(_fixture.Options))
+        using (var context = new BudgetDataContext(Options))
         {
             var transactionController = new TransactionController(context);
             var view = transactionController.Index(budgetFilter, searchString).Result as ViewResult;
-            _table = (TransactionsTableViewModel)view.ViewData.Model;
+            _table = (TransactionsTableViewModel) view.ViewData.Model;
         }
     }
 
     [Fact]
     public void Index_ShouldCalculateTotalSumOfAllTransactions()
     {
-        Debug.WriteLine("#### TOTAL SUM ####");
         CreateViewDataModel();
-        _table.TotalSum.Should().Be((decimal)11.11);
+        _table.TotalSum.Should().Be((decimal) 11.11);
     }
 
     [Fact]
@@ -54,10 +63,14 @@ public class TransactionControllerTest : IClassFixture<DatabaseFixture>, IDispos
     public void Index_ShouldCalculateSubtotalSumOfAnyBudget()
     {
         CreateViewDataModel();
-        _table.TransactionsPerCategories[0].TotalSum.Should().Be((decimal)0.11);
-        _table.TransactionsPerCategories[0].Transactions.Count.Should().Be(2);
-        _table.TransactionsPerCategories[1].TotalSum.Should().Be((decimal)1.00);
-        _table.TransactionsPerCategories[1].Transactions.Count.Should().Be(1);
+        _table.TransactionsPerCategories.First(transactionList => transactionList.GetBudget() == "Budget1").TotalSum
+            .Should().Be((decimal) 0.11);
+        _table.TransactionsPerCategories.First(transactionList => transactionList.GetBudget() == "Budget1").Transactions
+            .Count.Should().Be(2);
+        _table.TransactionsPerCategories.First(transactionList => transactionList.GetBudget() == "Budget2").TotalSum
+            .Should().Be((decimal) 1.00);
+        _table.TransactionsPerCategories.First(transactionList => transactionList.GetBudget() == "Budget2").Transactions
+            .Count.Should().Be(1);
     }
 
     [Fact]
@@ -65,7 +78,7 @@ public class TransactionControllerTest : IClassFixture<DatabaseFixture>, IDispos
     {
         CreateViewDataModel("Budget1");
         _table.TransactionsPerCategories.Count.Should().Be(1);
-        _table.TotalSum.Should().Be((decimal)0.11);
+        _table.TotalSum.Should().Be((decimal) 0.11);
     }
 
     [Fact]
@@ -73,7 +86,7 @@ public class TransactionControllerTest : IClassFixture<DatabaseFixture>, IDispos
     {
         CreateViewDataModel("Alle");
         _table.TransactionsPerCategories.Count.Should().Be(3);
-        _table.TotalSum.Should().Be((decimal)11.11);
+        _table.TotalSum.Should().Be((decimal) 11.11);
     }
 
     [Fact]
@@ -81,7 +94,8 @@ public class TransactionControllerTest : IClassFixture<DatabaseFixture>, IDispos
     {
         CreateViewDataModel(searchString: "cd");
         _table.TransactionsPerCategories.Count.Should().Be(2);
-        _table.TransactionsPerCategories[0].Transactions.Count.Should().Be(1);
+        _table.TransactionsPerCategories.First(transactionList => transactionList.GetBudget() == "Budget1").Transactions
+            .Count.Should().Be(1);
     }
 
     [Fact]
@@ -89,7 +103,6 @@ public class TransactionControllerTest : IClassFixture<DatabaseFixture>, IDispos
     {
         CreateViewDataModel("Budget1", "cd");
         _table.TransactionsPerCategories.Count.Should().Be(1);
-        _table.TransactionsPerCategories[0].Transactions.Count.Should().Be(1);
     }
 
     [Fact]
@@ -97,12 +110,11 @@ public class TransactionControllerTest : IClassFixture<DatabaseFixture>, IDispos
     {
         const string budgetName = TransactionService.BudgetCategoryAll;
 
-        using (var context = new BudgetDataContext(_fixture.Options))
+        using (var context = new BudgetDataContext(Options))
         {
             var transactionController = new TransactionController(context);
             var transaction = new Transaction
             {
-                Id = 99,
                 DescriptionOfTransaction = "Description",
                 Budget = budgetName,
                 ValueOfTransaction = 123
@@ -119,7 +131,7 @@ public class TransactionControllerTest : IClassFixture<DatabaseFixture>, IDispos
     {
         const string budgetName = "Flugzeugtraeger";
 
-        using (var context = new BudgetDataContext(_fixture.Options))
+        using (var context = new BudgetDataContext(Options))
         {
             var transactionController = new TransactionController(context);
             var transaction = new Transaction
@@ -137,15 +149,14 @@ public class TransactionControllerTest : IClassFixture<DatabaseFixture>, IDispos
 
     public void Dispose()
     {
-        Debug.WriteLine("############### Start Dispose ##################");
-        _fixture.Dispose();
-        using (var context = new BudgetDataContext(_fixture.Options))
+        using (var context = new BudgetDataContext(Options))
         {
-            foreach (var tr in context.Transaction.AsQueryable())
+            var transaction = context.Transaction.ToList();
+            if (transaction != null && transaction.Count > 0)
             {
-                Debug.WriteLine(tr);
+                context.Transaction.RemoveRange(transaction);
+                context.SaveChangesAsync();
             }
         }
-        Debug.WriteLine("################ End Dispose ###################");
     }
 }
