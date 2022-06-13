@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using BudgetData.Data;
 using BudgetData.Models;
 using Microsoft.EntityFrameworkCore;
@@ -31,8 +32,6 @@ public class DatabaseFixture : IDisposable
 
     public void Dispose()
     {
-        using (var context = new BudgetDataContext(Options))
-        {
-        }
+        
     }
 }

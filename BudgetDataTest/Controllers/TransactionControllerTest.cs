@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using BudgetData.Controllers;
 using BudgetData.Data;
@@ -14,7 +15,7 @@ using Xunit.Abstractions;
 
 namespace BudgetDataTest.Controllers;
 
-public class TransactionControllerTest : IClassFixture<DatabaseFixture>
+public class TransactionControllerTest : IClassFixture<DatabaseFixture>, IDisposable
 {
     DatabaseFixture _fixture;
     TransactionsTableViewModel _table;
@@ -37,6 +38,7 @@ public class TransactionControllerTest : IClassFixture<DatabaseFixture>
     [Fact]
     public void Index_ShouldCalculateTotalSumOfAllTransactions()
     {
+        Debug.WriteLine("#### TOTAL SUM ####");
         CreateViewDataModel();
         _table.TotalSum.Should().Be((decimal)11.11);
     }
@@ -116,7 +118,7 @@ public class TransactionControllerTest : IClassFixture<DatabaseFixture>
     public void Create_ShouldIncludeAnyOtherCategory()
     {
         const string budgetName = "Flugzeugtraeger";
-        
+
         using (var context = new BudgetDataContext(_fixture.Options))
         {
             var transactionController = new TransactionController(context);
@@ -131,5 +133,19 @@ public class TransactionControllerTest : IClassFixture<DatabaseFixture>
 
         CreateViewDataModel();
         _table.TransactionsPerCategories.Select(t => t.Transactions[0].Budget).Should().Contain(budgetName);
+    }
+
+    public void Dispose()
+    {
+        Debug.WriteLine("############### Start Dispose ##################");
+        _fixture.Dispose();
+        using (var context = new BudgetDataContext(_fixture.Options))
+        {
+            foreach (var tr in context.Transaction.AsQueryable())
+            {
+                Debug.WriteLine(tr);
+            }
+        }
+        Debug.WriteLine("################ End Dispose ###################");
     }
 }
