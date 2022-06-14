@@ -1,4 +1,5 @@
 using System;
+using System.Diagnostics;
 using System.Linq;
 using BudgetData.Controllers;
 using BudgetData.Data;
@@ -19,7 +20,7 @@ public class TransactionControllerTest : IDisposable
     public TransactionControllerTest()
     {
         Options = new DbContextOptionsBuilder<BudgetDataContext>()
-            .UseInMemoryDatabase(databaseName: "BudgetDatabase")
+            .UseInMemoryDatabase(databaseName: "TransactionControllerTestDatabase")
             .Options;
 
         using (var context = new BudgetDataContext(Options))
