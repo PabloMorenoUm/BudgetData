@@ -9,13 +9,18 @@
 <form asp-action="Gehaltseingang" method="post">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="form-group">
+        <label asp-for="TotalIncome" class="control-label"></label>
+        <input asp-for="TotalIncome" value="1000" class="form-control"/>
+        <span asp-validation-for="TotalIncome" class="text-danger"></span>
+    </div>
+    <div class="form-group">
         <label asp-for="MieteIncome" class="control-label"></label>
-        <input asp-for="MieteIncome" class="form-control"/>
+        <input asp-for="MieteIncome" value="100" class="form-control"/>
         <span asp-validation-for="MieteIncome" class="text-danger"></span>
     </div>
     <div class="form-group">
         <label asp-for="EssenIncome" class="control-label"></label>
-        <input asp-for="EssenIncome" class="form-control"/>
+        <input asp-for="EssenIncome" value="100" class="form-control"/>
         <span asp-validation-for="EssenIncome" class="text-danger"></span>
     </div>
     <div class="form-group">
@@ -25,7 +30,7 @@
     </div>
     <div class="form-group">
         <label asp-for="SonstigesIncome" class="control-label"></label>
-        <input asp-for="SonstigesIncome" class="form-control"/>
+        <input type="text" value="Errechtet sich als Restbetrag" class="form-control" disabled/>
         <span asp-validation-for="SonstigesIncome" class="text-danger"></span>
     </div>
     <br/>

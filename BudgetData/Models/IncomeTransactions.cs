@@ -5,6 +5,10 @@ namespace BudgetData.Models;
 public class IncomeTransactions
 {
     [DataType(DataType.Currency)]
+    [Display(Name = "Gesamteinkommen")]
+    public decimal TotalIncome { get; set; }
+    
+    [DataType(DataType.Currency)]
     [Display(Name = "Miete")]
     public decimal MieteIncome { get; set; }
     
@@ -15,10 +19,10 @@ public class IncomeTransactions
     [DataType(DataType.Currency)]
     [Display(Name = "Freizeit")]
     public decimal FreizeitIncome { get; set; }
-    
+
     [DataType(DataType.Currency)]
     [Display(Name = "Sonstiges")]
-    public decimal SonstigesIncome { get; set; }
+    public decimal SonstigesIncome => TotalIncome - MieteIncome - EssenIncome - FreizeitIncome;
 
     public IEnumerable<Transaction> TransactionList
     {

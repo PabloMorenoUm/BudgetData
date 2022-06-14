@@ -40,7 +40,7 @@ public class KontoServiceController : Controller
     [HttpPost]
     [ValidateAntiForgeryToken]
     public IActionResult Gehaltseingang(
-        [Bind("MieteIncome, EssenIncome, FreizeitIncome, SonstigesIncome")]
+        [Bind("TotalIncome, MieteIncome, EssenIncome, FreizeitIncome")]
         IncomeTransactions incomeTransactions)
     {
         if (ModelState.IsValid)
