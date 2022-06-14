@@ -20,7 +20,6 @@ namespace BudgetData.Controllers
         // GET: Transaction
         public async Task<IActionResult> Index(string budgetFilter, string searchString)
         {
-            
             _transactionService.SearchTransactionsByDescription(searchString);
             _transactionService.FilterBudgets(budgetFilter);
             

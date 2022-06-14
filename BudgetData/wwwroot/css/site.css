@@ -16,3 +16,5 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+tr:hover {background-color: #D6EEEE;}

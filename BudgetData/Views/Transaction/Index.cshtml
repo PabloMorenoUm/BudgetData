@@ -4,15 +4,11 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<h2>Kontoübersicht</h2>
 
 <div class="text-center">
     Gesamtbetrag:
-    <h3>@Html.DisplayFor(item => Model.TotalSum)</h3>
+    <h2>@Html.DisplayFor(item => Model.TotalSum)</h2>
 </div>
 
 <form asp-controller="Transaction" asp-action="Index" method="get">
