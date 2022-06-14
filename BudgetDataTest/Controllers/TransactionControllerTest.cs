@@ -24,14 +24,22 @@ public class TransactionControllerTest : IDisposable
 
         using (var context = new BudgetDataContext(Options))
         {
-            context.Transaction!.Add(new Transaction()
-                {DescriptionOfTransaction = "abc", Budget = "Budget1", ValueOfTransaction = (decimal) 0.01});
-            context.Transaction.Add(new Transaction()
-                {DescriptionOfTransaction = "bcd", Budget = "Budget1", ValueOfTransaction = (decimal) 0.10});
-            context.Transaction.Add(new Transaction()
-                {DescriptionOfTransaction = "cde", Budget = "Budget2", ValueOfTransaction = (decimal) 1.00});
-            context.Transaction.Add(new Transaction()
-                {DescriptionOfTransaction = "xyz", Budget = "Hifi", ValueOfTransaction = (decimal) 10.00});
+            context.Transaction!.Add(new Transaction
+            {
+                DescriptionOfTransaction = "abc", Budget = "Budget1", ValueOfTransaction = (decimal)0.01
+            });
+            context.Transaction.Add(new Transaction
+            {
+                DescriptionOfTransaction = "bcd", Budget = "Budget1", ValueOfTransaction = (decimal)0.10
+            });
+            context.Transaction.Add(new Transaction
+            {
+                DescriptionOfTransaction = "cde", Budget = "Budget2", ValueOfTransaction = (decimal)1.00
+            });
+            context.Transaction.Add(new Transaction
+            {
+                DescriptionOfTransaction = "xyz", Budget = "Hifi", ValueOfTransaction = (decimal)10.00
+            });
             context.SaveChanges();
         }
     }
@@ -42,7 +50,7 @@ public class TransactionControllerTest : IDisposable
         {
             var transactionController = new TransactionController(context);
             var view = transactionController.Index(budgetFilter, searchString).Result as ViewResult;
-            _table = (TransactionsTableViewModel) view.ViewData.Model;
+            _table = (TransactionsTableViewModel)view.ViewData.Model;
         }
     }
 
@@ -50,7 +58,7 @@ public class TransactionControllerTest : IDisposable
     public void Index_ShouldCalculateTotalSumOfAllTransactions()
     {
         CreateViewDataModel();
-        _table.TotalSum.Should().Be((decimal) 11.11);
+        _table.TotalSum.Should().Be((decimal)11.11);
     }
 
     [Fact]
@@ -65,11 +73,11 @@ public class TransactionControllerTest : IDisposable
     {
         CreateViewDataModel();
         _table.TransactionsPerCategories.First(transactionList => transactionList.GetBudget() == "Budget1").TotalSum
-            .Should().Be((decimal) 0.11);
+            .Should().Be((decimal)0.11);
         _table.TransactionsPerCategories.First(transactionList => transactionList.GetBudget() == "Budget1").Transactions
             .Count.Should().Be(2);
         _table.TransactionsPerCategories.First(transactionList => transactionList.GetBudget() == "Budget2").TotalSum
-            .Should().Be((decimal) 1.00);
+            .Should().Be((decimal)1.00);
         _table.TransactionsPerCategories.First(transactionList => transactionList.GetBudget() == "Budget2").Transactions
             .Count.Should().Be(1);
     }
@@ -79,7 +87,7 @@ public class TransactionControllerTest : IDisposable
     {
         CreateViewDataModel("Budget1");
         _table.TransactionsPerCategories.Count.Should().Be(1);
-        _table.TotalSum.Should().Be((decimal) 0.11);
+        _table.TotalSum.Should().Be((decimal)0.11);
     }
 
     [Fact]
@@ -87,7 +95,7 @@ public class TransactionControllerTest : IDisposable
     {
         CreateViewDataModel("Alle");
         _table.TransactionsPerCategories.Count.Should().Be(3);
-        _table.TotalSum.Should().Be((decimal) 11.11);
+        _table.TotalSum.Should().Be((decimal)11.11);
     }
 
     [Fact]
