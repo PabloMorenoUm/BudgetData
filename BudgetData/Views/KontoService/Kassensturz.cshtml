@@ -17,14 +17,17 @@
     </div>
     <br/>
     <div class="form-group">
-        <input type="submit" value="Check" class="btn btn-primary"/>
+        <input type="submit" value="Berechnen" class="btn btn-primary"/>
     </div>
     <br/>
+    <div>
+        <a asp-controller="Transaction" asp-action="Index">Zurück zum Konto</a>
+    </div>
     <div class="text-center">
         @if (Model != null)
         {
             <p>
-                Die Differenz der gerade eingegebenen Werte vom Gesamtbetrag der Kontobewegungen beträgt <br/>
+                Differenz vom Gesamtbetrag der Kontobewegungen: <br/>
                 <h3><b>@Html.DisplayFor(item => Model.Difference)</b></h3>
             </p>
         }
