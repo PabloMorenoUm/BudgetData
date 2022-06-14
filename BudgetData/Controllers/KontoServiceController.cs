@@ -9,11 +9,13 @@ public class KontoServiceController : Controller
 {
     private readonly BudgetDataContext _context;
     private KassensturzService _kassensturzService;
+    private TransactionService _transactionService;
 
     public KontoServiceController(BudgetDataContext context)
     {
         _context = context;
         _kassensturzService = new KassensturzService(_context);
+        _transactionService = new TransactionService(_context);
     }
 
     // GET
@@ -21,7 +23,7 @@ public class KontoServiceController : Controller
     {
         return View();
     }
-    
+
     [HttpPost]
     [ValidateAntiForgeryToken]
     public async Task<IActionResult> Kassensturz([Bind("Konto, Bargeld")] Kassensturz kassensturz)
@@ -29,9 +31,26 @@ public class KontoServiceController : Controller
         kassensturz.Difference = _kassensturzService.CalculateDifference(kassensturz);
         return View(kassensturz);
     }
-    
+
     public IActionResult Gehaltseingang()
     {
         return View();
+    }
+
+    [HttpPost]
+    [ValidateAntiForgeryToken]
+    public IActionResult Gehaltseingang(
+        [Bind("MieteIncome, EssenIncome, FreizeitIncome, SonstigesIncome")]
+        IncomeTransactions incomeTransactions)
+    {
+        if (ModelState.IsValid)
+        {
+            _transactionService.BookIncomeTransactions(incomeTransactions);
+            return Redirect(
+                Url.Link("DefaultApi", new {controller = "Transaction", action = "Index"}) ?? "/"
+            );
+        }
+
+        return View(incomeTransactions);
     }
 }

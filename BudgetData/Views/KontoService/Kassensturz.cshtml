@@ -24,9 +24,8 @@
         @if (Model != null)
         {
             <p>
-                Die Differenz der gerade eingegebenen Werte vom Gesamtbetrag der Kontobewegungen beträgt
-                @Html.DisplayFor(item => Model.Difference)
-                .
+                Die Differenz der gerade eingegebenen Werte vom Gesamtbetrag der Kontobewegungen beträgt <br/>
+                <h3><b>@Html.DisplayFor(item => Model.Difference)</b></h3>
             </p>
         }
 

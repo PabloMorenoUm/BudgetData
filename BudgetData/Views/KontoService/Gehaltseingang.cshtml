@@ -1,4 +1,4 @@
-@model dynamic
+@model BudgetData.Models.IncomeTransactions
 
 @{
     ViewBag.Title = "Gehaltseingang";
@@ -6,3 +6,39 @@
 }
 
 <h2>Gehaltseingang</h2>
+<form asp-action="Gehaltseingang" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <div class="form-group">
+        <label asp-for="MieteIncome" class="control-label"></label>
+        <input asp-for="MieteIncome" class="form-control"/>
+        <span asp-validation-for="MieteIncome" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="EssenIncome" class="control-label"></label>
+        <input asp-for="EssenIncome" class="form-control"/>
+        <span asp-validation-for="EssenIncome" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="FreizeitIncome" class="control-label"></label>
+        <input asp-for="FreizeitIncome" value="100" class="form-control"/>
+        <span asp-validation-for="FreizeitIncome" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="SonstigesIncome" class="control-label"></label>
+        <input asp-for="SonstigesIncome" class="form-control"/>
+        <span asp-validation-for="SonstigesIncome" class="text-danger"></span>
+    </div>
+    <br/>
+    <div class="form-group">
+        <input type="submit" value="Book" class="btn btn-primary"/>
+    </div>
+    <br/>
+</form>
+
+<div>
+    <a asp-controller="Transaction" asp-action="Index">Zurück zum Konto</a>
+</div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+}

@@ -7,13 +7,15 @@ namespace BudgetData.Services;
 public class TransactionService
 {
     public const string BudgetCategoryAll = "Alle";
-    
+
+    private BudgetDataContext _context;
     private IQueryable<Transaction> _transactions;
     private IQueryable<string> _budgets;
     private readonly TransactionsTableViewModel _transactionsTableViewModel;
 
     public TransactionService(BudgetDataContext context)
     {
+        _context = context;
         _transactions = from m in context.Transaction select m;
         _budgets = GetBudgetsFromTransactions();
         
@@ -60,5 +62,11 @@ public class TransactionService
     private IQueryable<string> GetBudgetsFromTransactions()
     {
         return _transactions.Select(transaction => transaction.Budget).Distinct();
+    }
+
+    public void BookIncomeTransactions(IncomeTransactions incomeTransactions)
+    {
+        _context.AddRange(incomeTransactions.TransactionList);
+        _context.SaveChanges();
     }
 }

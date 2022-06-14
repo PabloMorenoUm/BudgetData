@@ -156,5 +156,11 @@ namespace BudgetData.Controllers
         {
           return (_context.Transaction?.Any(e => e.Id == id)).GetValueOrDefault();
         }
+
+        public async void DeleteAll()
+        {
+            _context.Database.ExecuteSqlRawAsync("TRUNCATE TABLE Transaction");;
+            
+        }
     }
 }
