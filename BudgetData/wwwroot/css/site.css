@@ -17,4 +17,4 @@ body {
   margin-bottom: 60px;
 }
 
-tr.transactioncolumn:hover {background-color: #D6EEEE;}
+tr.transactionrow:hover {background-color: #D6EEEE;}

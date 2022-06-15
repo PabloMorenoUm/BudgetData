@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using BudgetData.Data;
@@ -57,12 +58,17 @@ namespace BudgetData.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,DateOfTransaction,DescriptionOfTransaction,ValueOfTransaction,Budget")] Transaction transaction)
+        public async Task<IActionResult> Create([Bind("Id,DateOfTransaction,DescriptionOfTransaction,ValueOfTransaction,Budget")] Transaction transaction,
+            [Bind("AnotherItem")] string? anotherItem)
         {
             if (!ModelState.IsValid || transaction.Budget == TransactionService.BudgetCategoryAll)
+            {
                 return View(transaction);
+            }
             _context.Add(transaction);
             await _context.SaveChangesAsync();
+            
+            if (anotherItem != null) return View(transaction);
             return RedirectToAction(nameof(Index));
         }
 

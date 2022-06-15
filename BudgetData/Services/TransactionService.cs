@@ -45,11 +45,16 @@ public class TransactionService
     {
         foreach (var budget in _budgets)
         {
-            var transactions = _transactions.Where(transactions => transactions.Budget == budget);
+            var transactions = _transactions.Where(transactions => transactions.Budget == budget)
+                .OrderByDescending(t => t.DateOfTransaction).ToList();
             var totalSum = transactions.Select(t => t.ValueOfTransaction).Sum();
+            if (_budgets.Count() > 1)
+            {
+                transactions = transactions.Take(5).ToList();
+            }
             var transactionsPerCategory = new TransactionsPerCategory
             {
-                Transactions = transactions.ToList(),
+                Transactions = transactions,
                 TotalSum = totalSum
             };
             _transactionsTableViewModel.TransactionsPerCategories.Add(transactionsPerCategory);
