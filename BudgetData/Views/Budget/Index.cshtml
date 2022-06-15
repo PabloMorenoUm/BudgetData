@@ -5,25 +5,26 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Index</h1>
+<h1>Budgetverwaltung</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Neues Budget anlegen</a>
 </p>
 <table class="table">
     <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Purpose)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.DefaultIncome)
-            </th>
-            <th></th>
-        </tr>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Purpose)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DefaultIncome)
+        </th>
+        <th></th>
+    </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+    @foreach (var item in Model)
+    {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Purpose)
@@ -32,11 +33,17 @@
                 @Html.DisplayFor(modelItem => item.DefaultIncome)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.Id">
+                    <img src="~/images/edit.png" alt="Edit" height="20">
+                </a> |
+                <a asp-action="Details" asp-route-id="@item.Id">
+                    <img src="~/images/list.png" alt="Details" height="20">
+                </a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">
+                    <img src="~/images/delete.png" alt="Delete" height="20">
+                </a>
             </td>
         </tr>
-}
+    }
     </tbody>
 </table>
