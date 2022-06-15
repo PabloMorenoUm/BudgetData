@@ -11,11 +11,13 @@ namespace BudgetData.Controllers
     {
         private readonly BudgetDataContext _context;
         private readonly TransactionService _transactionService;
+        private readonly BudgetService _budgetService;
 
         public TransactionController(BudgetDataContext context)
         {
             _context = context;
             _transactionService = new TransactionService(_context);
+            _budgetService = new BudgetService(_context);
         }
 
         // GET: Transaction
@@ -50,7 +52,7 @@ namespace BudgetData.Controllers
         // GET: Transaction/Create
         public IActionResult Create()
         {
-            return View();
+            return View(GetTransactionViewModelWithSelectList());
         }
 
         // POST: Transaction/Create
@@ -63,12 +65,12 @@ namespace BudgetData.Controllers
         {
             if (!ModelState.IsValid || transaction.Budget == TransactionService.BudgetCategoryAll)
             {
-                return View(transaction);
+                return View(GetTransactionViewModelWithSelectList());
             }
             _context.Add(transaction);
             await _context.SaveChangesAsync();
             
-            if (anotherItem != null) return View(transaction);
+            if (anotherItem != null) return View(GetTransactionViewModelWithSelectList());
             return RedirectToAction(nameof(Index));
         }
 
@@ -157,15 +159,23 @@ namespace BudgetData.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        public async void DeleteAll()
+        {
+            _context.Database.ExecuteSqlRawAsync("TRUNCATE TABLE Transaction");;
+            
+        }
+
         private bool TransactionExists(int id)
         {
           return (_context.Transaction?.Any(e => e.Id == id)).GetValueOrDefault();
         }
 
-        public async void DeleteAll()
+        private TransactionViewModel GetTransactionViewModelWithSelectList()
         {
-            _context.Database.ExecuteSqlRawAsync("TRUNCATE TABLE Transaction");;
-            
+            return new TransactionViewModel
+            {
+                BudgetsSl = _budgetService.CreateBudgetsFromDB()
+            };
         }
     }
 }

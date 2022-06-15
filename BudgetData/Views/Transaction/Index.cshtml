@@ -9,10 +9,10 @@
 <div style="display: flex; justify-content: space-between; align-items: flex-end">
     <form asp-controller="Transaction" asp-action="Index" method="get" class="m-1" style="width: 300px">
         <select asp-for="BudgetFilter" asp-items="Model.Budgets"></select>
-            <input asp-for="SearchString" type="text" style="width: 180px"><br/>
-            <input type="submit"/>
+        <input asp-for="SearchString" type="text" style="width: 180px"><br/>
+        <input type="submit"/>
     </form>
-    <div class="text-center" >
+    <div class="text-center">
         Gesamtbetrag:
         <h2>@Html.DisplayFor(item => Model.TotalSum)</h2>
     </div>

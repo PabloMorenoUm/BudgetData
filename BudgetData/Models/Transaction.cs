@@ -1,6 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Numerics;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace BudgetData.Models;
 
@@ -16,6 +17,8 @@ public class Transaction
     [Display(Name = "Beschreibung")]
     public string DescriptionOfTransaction { get; set; }
     public string Budget { get; set; }
+    
+    public SelectList? Budgets { get; set; }
     
     [DataType(DataType.Currency)]
     [Display(Name = "Geldbetrag")]
