@@ -69,7 +69,7 @@ public class TransactionService
         return _transactions.Select(transaction => transaction.Budget).Distinct();
     }
 
-    public void BookIncomeTransactions(IncomeTransactions incomeTransactions)
+    public void BookIncomeTransactions(IncomeTransactionsViewModel incomeTransactions)
     {
         _context.AddRange(incomeTransactions.TransactionList);
         _context.SaveChanges();

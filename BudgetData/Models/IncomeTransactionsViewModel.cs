@@ -2,27 +2,29 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BudgetData.Models;
 
-public class IncomeTransactions
+public class IncomeTransactionsViewModel
 {
+    public List<Budget> BudgetList { get; set; }
+
     [DataType(DataType.Currency)]
     [Display(Name = "Gesamteinkommen")]
     public decimal TotalIncome { get; set; }
-    
+
     [DataType(DataType.Currency)]
     [Display(Name = "Miete")]
-    public decimal MieteIncome { get; set; }
-    
+    public decimal Miete { get; set; }
+
     [DataType(DataType.Currency)]
     [Display(Name = "Essen")]
-    public decimal EssenIncome { get; set; }
-    
+    public decimal Essen { get; set; }
+
     [DataType(DataType.Currency)]
     [Display(Name = "Freizeit")]
     public decimal FreizeitIncome { get; set; }
 
     [DataType(DataType.Currency)]
     [Display(Name = "Sonstiges")]
-    public decimal SonstigesIncome => TotalIncome - MieteIncome - EssenIncome - FreizeitIncome;
+    public decimal SonstigesIncome => TotalIncome - Miete - Essen - FreizeitIncome;
 
     public IEnumerable<Transaction> TransactionList
     {
@@ -30,10 +32,8 @@ public class IncomeTransactions
         {
             return new List<Transaction>()
             {
-                createTransaction("Miete", MieteIncome),
-                createTransaction("Essen", EssenIncome),
-                createTransaction("Freizeit", FreizeitIncome),
-                createTransaction("Sonstiges", SonstigesIncome)
+                createTransaction("Miete", Miete),
+                createTransaction("Essen", Essen)
             };
         }
     }
@@ -48,5 +48,4 @@ public class IncomeTransactions
             ValueOfTransaction = amount
         };
     }
-    
 }

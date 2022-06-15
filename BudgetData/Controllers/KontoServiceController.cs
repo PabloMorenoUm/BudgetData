@@ -34,14 +34,20 @@ public class KontoServiceController : Controller
 
     public IActionResult Gehaltseingang()
     {
-        return View();
+        var budgets = from b in _context.Budget select b;
+        IncomeTransactionsViewModel ITVM = new()
+        {
+            BudgetList = budgets.ToList()
+        };
+        
+        return View(ITVM);
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
     public IActionResult Gehaltseingang(
-        [Bind("TotalIncome, MieteIncome, EssenIncome, FreizeitIncome")]
-        IncomeTransactions incomeTransactions)
+        [Bind("Miete, Essen")]
+        IncomeTransactionsViewModel incomeTransactions)
     {
         if (ModelState.IsValid)
         {
@@ -51,6 +57,6 @@ public class KontoServiceController : Controller
             );
         }
 
-        return View(incomeTransactions);
+        return View();
     }
 }
