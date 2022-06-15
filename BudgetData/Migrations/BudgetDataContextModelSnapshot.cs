@@ -22,6 +22,26 @@ namespace BudgetData.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
+            modelBuilder.Entity("BudgetData.Models.Budget", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<decimal>("DefaultIncome")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Purpose")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Budget");
+                });
+
             modelBuilder.Entity("BudgetData.Models.Transaction", b =>
                 {
                     b.Property<int>("Id")
@@ -39,7 +59,8 @@ namespace BudgetData.Migrations
 
                     b.Property<string>("DescriptionOfTransaction")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(60)
+                        .HasColumnType("nvarchar(60)");
 
                     b.Property<decimal>("ValueOfTransaction")
                         .HasColumnType("decimal(18,2)");

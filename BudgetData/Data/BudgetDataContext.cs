@@ -16,5 +16,7 @@ namespace BudgetData.Data
         }
 
         public DbSet<Transaction>? Transaction { get; set; }
+
+        public DbSet<Budget>? Budget { get; set; }
     }
 }
