@@ -27,7 +27,7 @@ public class TransactionService
         };
     }
 
-    public void SearchTransactionsByDescription(string searchString)
+    public void SearchTransactionsByDescription(string? searchString)
     {
         if (string.IsNullOrEmpty(searchString)) return;
         _transactions = _transactions.Where(transaction =>
@@ -35,7 +35,7 @@ public class TransactionService
         _budgets = GetBudgetsFromTransactions();
     }
 
-    public void FilterBudgets(string budgetFilter)
+    public void FilterBudgets(string? budgetFilter)
     {
         if (string.IsNullOrEmpty(budgetFilter) || budgetFilter == BudgetCategoryAll) return;
         _budgets = _budgets.Where(budget => budget == budgetFilter);

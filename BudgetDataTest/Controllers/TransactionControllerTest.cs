@@ -50,7 +50,7 @@ public class TransactionControllerTest : IDisposable
         using (var context = new BudgetDataContext(Options))
         {
             var transactionController = new TransactionController(context);
-            var view = transactionController.Index(budgetFilter, searchString).Result as ViewResult;
+            var view = transactionController.Index(budgetFilter, searchString) as ViewResult;
             _table = (TransactionsTableViewModel)view.ViewData.Model;
         }
     }
