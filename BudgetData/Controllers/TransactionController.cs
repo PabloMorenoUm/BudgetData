@@ -59,7 +59,7 @@ namespace BudgetData.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,DateOfTransaction,DescriptionOfTransaction,ValueOfTransaction,Budget")] Transaction transaction,
-            [Bind("AnotherItem")] string? anotherItem)
+            [Bind("AnotherItem")] string? anotherItem = null)
         {
             if (!ModelState.IsValid || transaction.Budget == TransactionService.BudgetCategoryAll)
             {
