@@ -4,20 +4,20 @@
     ViewData["Title"] = "Index";
 }
 
-<h2>Kontoübersicht</h2>
+<h2 xmlns="http://www.w3.org/1999/html">Kontoübersicht</h2>
 
-<div class="text-center">
-    Gesamtbetrag:
-    <h2>@Html.DisplayFor(item => Model.TotalSum)</h2>
-</div>
-
-<form asp-controller="Transaction" asp-action="Index" method="get">
-    <p>
+<div style="display: flex; justify-content: space-between; align-items: flex-end">
+    <form asp-controller="Transaction" asp-action="Index" method="get" class="m-1" style="width: 300px">
         <select asp-for="BudgetFilter" asp-items="Model.Budgets"></select>
-        <input asp-for="SearchString" type="text">
-        <input type="submit"/>
-    </p>
-</form>
+            <input asp-for="SearchString" type="text" style="width: 180px"><br/>
+            <input type="submit"/>
+    </form>
+    <div class="text-center" >
+        Gesamtbetrag:
+        <h2>@Html.DisplayFor(item => Model.TotalSum)</h2>
+    </div>
+    <div style="width: 300px"></div>
+</div>
 
 @foreach (var transaction in Model.TransactionsPerCategories)
 {
