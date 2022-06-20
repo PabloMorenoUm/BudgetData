@@ -1,8 +1,5 @@
-using System.Globalization;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.DependencyInjection;
 using BudgetData.Data;
-using Microsoft.AspNetCore.Localization;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<BudgetDataContext>(options =>

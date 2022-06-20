@@ -1,4 +1,6 @@
-@model BudgetData.Models.IncomeTransactions
+@using System.Text.RegularExpressions
+@using System.Globalization
+@model BudgetData.Models.IncomeTransactionsViewModel;
 
 @{
     ViewBag.Title = "Gehaltseingang";
@@ -8,31 +10,18 @@
 <h2>Gehaltseingang</h2>
 <form asp-action="Gehaltseingang" method="post">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    @foreach (var budget in Model.BudgetList.Where(item => item.Purpose!="Freizeit"))
+    {
+        <div class="form-group">
+            <label class="control-label">@Html.DisplayFor(item => budget.Purpose)</label>
+            <input name="@Html.DisplayFor(item => budget.Purpose)" value="@Html.DisplayFor(item => budget.DefaultIncome)" class="form-control"/>
+            @* <span asp-validation-for="Miete" class="text-danger"></span> *@
+        </div>
+    }
     <div class="form-group">
-        <label asp-for="TotalIncome" class="control-label"></label>
-        <input asp-for="TotalIncome" value="1000" class="form-control"/>
-        <span asp-validation-for="TotalIncome" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="MieteIncome" class="control-label"></label>
-        <input asp-for="MieteIncome" value="100" class="form-control"/>
-        <span asp-validation-for="MieteIncome" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="EssenIncome" class="control-label"></label>
-        <input asp-for="EssenIncome" value="100" class="form-control"/>
-        <span asp-validation-for="EssenIncome" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="FreizeitIncome" class="control-label"></label>
-        <input asp-for="FreizeitIncome" value="100" class="form-control"/>
-        <span asp-validation-for="FreizeitIncome" class="text-danger"></span>
-    </div>
-    <div class="form-group">
-        <label asp-for="SonstigesIncome" class="control-label"></label>
-        <input type="text" value="Errechtet sich als Restbetrag" class="form-control" disabled/>
-        <span asp-validation-for="SonstigesIncome" class="text-danger"></span>
-    </div>
+            <label class="control-label">Freizeit</label>
+            <input type="text" value="Errechtet sich als Restbetrag" class="form-control" disabled/>
+        </div>
     <br/>
     <div class="form-group">
         <input type="submit" value="Book" class="btn btn-primary"/>
