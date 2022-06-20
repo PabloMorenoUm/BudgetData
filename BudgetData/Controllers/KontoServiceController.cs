@@ -38,12 +38,12 @@ public class KontoServiceController : Controller
     public IActionResult Gehaltseingang()
     {
         var budgets = from b in _context.Budget select b;
-        IncomeTransactionsViewModel ITVM = new()
+        BudgetListModel budgetList = new()
         {
             BudgetList = budgets.ToList()
         };
 
-        return View(ITVM);
+        return View(budgetList);
     }
 
     [HttpPost]

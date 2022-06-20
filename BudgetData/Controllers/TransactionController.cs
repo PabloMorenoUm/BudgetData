@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using BudgetData.Data;
 using BudgetData.Models;
 using BudgetData.Services;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace BudgetData.Controllers
 {
@@ -50,7 +51,12 @@ namespace BudgetData.Controllers
         // GET: Transaction/Create
         public IActionResult Create()
         {
-            return View();
+            var _budgets = from b in _context.Budget select b.Purpose;
+            TransactionViewModel transactionViewModel = new()
+            {
+                Budgets = new SelectList(_budgets.Where(b => b != "Gesamteinkommen").ToList().Append("Freizeit"))
+            };
+            return View(transactionViewModel);
         }
 
         // POST: Transaction/Create
@@ -63,12 +69,12 @@ namespace BudgetData.Controllers
         {
             if (!ModelState.IsValid || transaction.Budget == TransactionService.BudgetCategoryAll)
             {
-                return View(transaction);
+                return RedirectToAction(nameof(Create));
             }
             _context.Add(transaction);
             await _context.SaveChangesAsync();
             
-            if (anotherItem != null) return View(transaction);
+            if (anotherItem != null) return RedirectToAction(nameof(Create));
             return RedirectToAction(nameof(Index));
         }
 

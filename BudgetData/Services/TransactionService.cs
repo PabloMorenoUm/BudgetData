@@ -74,7 +74,7 @@ public class TransactionService
         _context.SaveChanges();
     }
 
-    private IQueryable<string> GetBudgetsFromTransactions()
+    public IQueryable<string> GetBudgetsFromTransactions()
     {
         return _transactions.Select(transaction => transaction.Budget).Distinct();
     }
