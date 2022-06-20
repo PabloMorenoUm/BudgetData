@@ -18,7 +18,7 @@ public class TransactionService
         _context = context;
         _transactions = from m in context.Transaction select m;
         _budgets = GetBudgetsFromTransactions();
-        
+
         _transactionsTableViewModel = new TransactionsTableViewModel
         {
             TotalSum = 0,
@@ -52,6 +52,7 @@ public class TransactionService
             {
                 transactions = transactions.Take(5).ToList();
             }
+
             var transactionsPerCategory = new TransactionsPerCategory
             {
                 Transactions = transactions,
@@ -64,14 +65,28 @@ public class TransactionService
         return _transactionsTableViewModel;
     }
 
+    public void BookIncomeTransactionsFromDict(Dictionary<string, decimal> incomeValues)
+    {
+        foreach (var budget in incomeValues.Keys)
+        {
+            _context.Add(createIncomeTransaction(budget, incomeValues[budget]));
+        }
+        _context.SaveChanges();
+    }
+
     private IQueryable<string> GetBudgetsFromTransactions()
     {
         return _transactions.Select(transaction => transaction.Budget).Distinct();
     }
 
-    public void BookIncomeTransactions(IncomeTransactionsViewModel incomeTransactions)
+    private Transaction createIncomeTransaction(string budget, decimal value)
     {
-        _context.AddRange(incomeTransactions.TransactionList);
-        _context.SaveChanges();
+        return new Transaction()
+        {
+            Budget = budget,
+            DateOfTransaction = DateTime.Today,
+            DescriptionOfTransaction = "Gehalt",
+            ValueOfTransaction = value
+        };
     }
 }

@@ -10,17 +10,12 @@
 <h2>Gehaltseingang</h2>
 <form asp-action="Gehaltseingang" method="post">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    <div class="form-group">
-        <label asp-for="TotalIncome" class="control-label"></label>
-        <input asp-for="TotalIncome" value="5000" class="form-control"/>
-        <span asp-validation-for="TotalIncome" class="text-danger"></span>
-    </div>
-    @foreach (var budget in Model.BudgetList)
+    @foreach (var budget in Model.BudgetList.Where(item => item.Purpose!="Freizeit"))
     {
         <div class="form-group">
             <label class="control-label">@Html.DisplayFor(item => budget.Purpose)</label>
             <input name="@Html.DisplayFor(item => budget.Purpose)" value="@Html.DisplayFor(item => budget.DefaultIncome)" class="form-control"/>
-            <span asp-validation-for="Miete" class="text-danger"></span>
+            @* <span asp-validation-for="Miete" class="text-danger"></span> *@
         </div>
     }
     <br/>

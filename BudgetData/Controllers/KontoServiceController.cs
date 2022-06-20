@@ -2,6 +2,7 @@ using BudgetData.Data;
 using BudgetData.Models;
 using BudgetData.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.DotNet.Scaffolding.Shared.CodeModifier.CodeChange;
 
 namespace BudgetData.Controllers;
 
@@ -10,10 +11,12 @@ public class KontoServiceController : Controller
     private readonly BudgetDataContext _context;
     private KassensturzService _kassensturzService;
     private TransactionService _transactionService;
+    private GehaltseingangService _gehaltseingangService;
 
     public KontoServiceController(BudgetDataContext context)
     {
         _context = context;
+        _gehaltseingangService = new GehaltseingangService();
         _kassensturzService = new KassensturzService(_context);
         _transactionService = new TransactionService(_context);
     }
@@ -39,24 +42,23 @@ public class KontoServiceController : Controller
         {
             BudgetList = budgets.ToList()
         };
-        
+
         return View(ITVM);
     }
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public IActionResult Gehaltseingang(
-        [Bind("Miete, Essen")]
-        IncomeTransactionsViewModel incomeTransactions)
+    public IActionResult Gehaltseingang(Dictionary<string, string> incomeTransactions)
     {
         if (ModelState.IsValid)
         {
-            _transactionService.BookIncomeTransactions(incomeTransactions);
+            var preparedIncomeTransactions = _gehaltseingangService.PrepareDict(incomeTransactions);
+            _transactionService.BookIncomeTransactionsFromDict(preparedIncomeTransactions);
             return Redirect(
                 Url.Link("DefaultApi", new {controller = "Transaction", action = "Index"}) ?? "/"
             );
         }
 
-        return View();
+        return RedirectToAction("Gehaltseingang");
     }
 }
