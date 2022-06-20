@@ -24,6 +24,6 @@ public class GehaltseingangService
     private decimal calculateFreizeitBudget(Dictionary<string, decimal> resultingTransactions)
     {
         decimal totalSum = resultingTransactions.Values.Sum();
-        return totalSum - 2 * resultingTransactions["Gesamteinkommen"];
+        return 2 * resultingTransactions["Gesamteinkommen"] - totalSum;
     }
 }
