@@ -25,7 +25,9 @@
         <thead>
         <tr>
             <th style="width: 100px">
-                @Html.DisplayFor(model => transaction.Transactions[0].Budget)
+                <a asp-action="Index" asp-route-budgetFilter="@transaction.Transactions[0].Budget" class="text-black">
+                    @Html.DisplayFor(model => transaction.Transactions[0].Budget)
+                </a>
             </th>
             <th style="width: 500px">
             </th>

@@ -54,7 +54,7 @@ namespace BudgetData.Controllers
             var _budgets = from b in _context.Budget select b.Purpose;
             TransactionViewModel transactionViewModel = new()
             {
-                Budgets = new SelectList(_budgets.Where(b => b != "Gesamteinkommen").ToList().Append("Freizeit"))
+                Budgets = new SelectList(_budgets.Where(b => b != "Gesamteinkommen" || b != "Freizeit").ToList().Append("Freizeit"))
             };
             return View(transactionViewModel);
         }
