@@ -10,7 +10,7 @@ public class TransactionService
 
     private BudgetDataContext _context;
     private IQueryable<Transaction> _transactions;
-    private IQueryable<string> _budgets;
+    private IQueryable<string?> _budgets;
     private readonly TransactionsTableViewModel _transactionsTableViewModel;
 
     public TransactionService(BudgetDataContext context)
@@ -31,7 +31,7 @@ public class TransactionService
     {
         if (string.IsNullOrEmpty(searchString)) return;
         _transactions = _transactions.Where(transaction =>
-            transaction.DescriptionOfTransaction.Contains(searchString));
+            transaction.DescriptionOfTransaction!.Contains(searchString));
         _budgets = GetBudgetsFromTransactions();
     }
 
@@ -58,7 +58,8 @@ public class TransactionService
                 Transactions = transactions,
                 TotalSum = totalSum
             };
-            _transactionsTableViewModel.TransactionsPerCategories.Add(transactionsPerCategory);
+            if (_transactionsTableViewModel.TransactionsPerCategories != null)
+                _transactionsTableViewModel.TransactionsPerCategories.Add(transactionsPerCategory);
             _transactionsTableViewModel.TotalSum += totalSum;
         }
 
@@ -74,7 +75,7 @@ public class TransactionService
         _context.SaveChanges();
     }
 
-    public IQueryable<string> GetBudgetsFromTransactions()
+    public IQueryable<string?> GetBudgetsFromTransactions()
     {
         return _transactions.Select(transaction => transaction.Budget).Distinct();
     }

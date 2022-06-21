@@ -29,7 +29,7 @@ public class KontoServiceController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Kassensturz([Bind("Konto, Bargeld")] Kassensturz kassensturz)
+    public IActionResult Kassensturz([Bind("Konto, Bargeld")] Kassensturz kassensturz)
     {
         kassensturz.Difference = _kassensturzService.CalculateDifference(kassensturz);
         return View(kassensturz);

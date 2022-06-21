@@ -19,14 +19,14 @@
     <div style="width: 300px"></div>
 </div>
 
-@foreach (var transaction in Model.TransactionsPerCategories)
+@foreach (var transaction in Model.TransactionsPerCategories!)
 {
     <table class="table">
         <thead>
         <tr>
             <th style="width: 100px">
-                <a asp-action="Index" asp-route-budgetFilter="@transaction.Transactions[0].Budget" class="text-black">
-                    @Html.DisplayFor(model => transaction.Transactions[0].Budget)
+                <a asp-action="Index" asp-route-budgetFilter="@transaction.Transactions?[0].Budget" class="text-black">
+                    @Html.DisplayFor(model => transaction.Transactions![0].Budget)
                 </a>
             </th>
             <th style="width: 500px">
@@ -38,7 +38,7 @@
         </tr>
         </thead>
         <tbody>
-        @foreach (var item in transaction.Transactions)
+        @foreach (var item in transaction.Transactions!)
         {
             <tr class="transactionrow">
                 <td>

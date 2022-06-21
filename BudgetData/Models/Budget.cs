@@ -8,7 +8,9 @@ public class Budget
 
     [Required]
     [Display(Name = "Kategorie")]
-    public string Purpose { get; set; }
+    public string? Purpose { get; set; }
+
+    [Display(Name = "Reihenfolge")] public int Priority { get; set; } = 99;
     
     [DataType(DataType.Currency)]
     [Display(Name = "Default Einkommen")]

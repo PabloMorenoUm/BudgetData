@@ -1,4 +1,4 @@
-@model BudgetData.Models.TransactionViewModel
+@model BudgetData.Models.CreateTransactionViewModel
 
 @{
     ViewData["Title"] = "Create";
@@ -12,24 +12,24 @@
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
-                <label asp-for="Transaction.DateOfTransaction" class="control-label"></label>
-                <input asp-for="Transaction.DateOfTransaction" class="form-control" value="@DateTime.Today.ToString("yyyy-MM-dd")"/>
-                <span asp-validation-for="Transaction.DateOfTransaction" class="text-danger"></span>
+                <label asp-for="Transaction!.DateOfTransaction" class="control-label"></label>
+                <input asp-for="Transaction!.DateOfTransaction" class="form-control" value="@DateTime.Today.ToString("yyyy-MM-dd")"/>
+                <span asp-validation-for="Transaction!.DateOfTransaction" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Transaction.DescriptionOfTransaction" class="control-label"></label>
-                <input asp-for="Transaction.DescriptionOfTransaction" class="form-control"/>
-                <span asp-validation-for="Transaction.DescriptionOfTransaction" class="text-danger"></span>
+                <label asp-for="Transaction!.DescriptionOfTransaction" class="control-label"></label>
+                <input asp-for="Transaction!.DescriptionOfTransaction" class="form-control"/>
+                <span asp-validation-for="Transaction!.DescriptionOfTransaction" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Transaction.Budget" class="control-label"></label><br/>
-                <select asp-for="Transaction.Budget" asp-items="Model.Budgets"></select>
-                <span asp-validation-for="Transaction.Budget" class="text-danger"></span>
+                <label asp-for="Transaction!.Budget" class="control-label"></label><br/>
+                <select asp-for="Transaction!.Budget" asp-items="Model.Budgets"></select>
+                <span asp-validation-for="Transaction!.Budget" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Transaction.ValueOfTransaction" class="control-label"></label>
-                <input asp-for="Transaction.ValueOfTransaction" class="form-control"/>
-                <span asp-validation-for="Transaction.ValueOfTransaction" class="text-danger"></span>
+                <label asp-for="Transaction!.ValueOfTransaction" class="control-label"></label>
+                <input asp-for="Transaction!.ValueOfTransaction" class="form-control"/>
+                <span asp-validation-for="Transaction!.ValueOfTransaction" class="text-danger"></span>
             </div>
             <br/>
             <div class="form-group">

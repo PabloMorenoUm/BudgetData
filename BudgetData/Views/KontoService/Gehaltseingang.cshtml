@@ -10,7 +10,7 @@
 <h2>Gehaltseingang</h2>
 <form asp-action="Gehaltseingang" method="post">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-    @foreach (var budget in Model.BudgetList.Where(item => item.Purpose!="Freizeit"))
+    @foreach (var budget in (Model.BudgetList ?? throw new InvalidOperationException()).Where(item => item.Purpose!="Freizeit"))
     {
         <div class="form-group">
             <label class="control-label">@Html.DisplayFor(item => budget.Purpose)</label>

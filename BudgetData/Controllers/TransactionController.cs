@@ -52,12 +52,12 @@ namespace BudgetData.Controllers
         public IActionResult Create()
         {
             var _budgets = from b in _context.Budget select b.Purpose;
-            TransactionViewModel transactionViewModel = new()
+            CreateTransactionViewModel createTransactionViewModel = new()
             {
                 Budgets = new SelectList(_budgets.Where(b => b != "Gesamteinkommen" && b != "Freizeit").ToList()
                     .Append("Freizeit"))
             };
-            return View(transactionViewModel);
+            return View(createTransactionViewModel);
         }
 
         // POST: Transaction/Create

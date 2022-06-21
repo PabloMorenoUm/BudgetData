@@ -2,9 +2,9 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace BudgetData.Models;
 
-public class TransactionViewModel
+public class CreateTransactionViewModel
 {
-    public Transaction Transaction { get; set; }
+    public Transaction? Transaction { get; set; }
     
     public SelectList? Budgets { get; set; }
 }

@@ -14,8 +14,8 @@ public class Transaction
     
     [StringLength(60, MinimumLength = 3)]
     [Display(Name = "Beschreibung")]
-    public string DescriptionOfTransaction { get; set; }
-    public string Budget { get; set; }
+    public string? DescriptionOfTransaction { get; set; }
+    public string? Budget { get; set; }
     
     [DataType(DataType.Currency)]
     [Display(Name = "Geldbetrag")]
