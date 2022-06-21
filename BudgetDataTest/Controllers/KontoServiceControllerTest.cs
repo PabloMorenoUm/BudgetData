@@ -48,7 +48,7 @@ public class KontoServiceControllerTest: IDisposable
                 Bargeld = 10
             };
             var kontoServiceController = new KontoServiceController(context);
-            var view = kontoServiceController.Kassensturz(kassensturz).Result as ViewResult;
+            var view = kontoServiceController.Kassensturz(kassensturz) as ViewResult;
             _kassensturz = (Kassensturz)view.ViewData.Model;
         }
     }

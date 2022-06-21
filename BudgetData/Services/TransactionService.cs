@@ -17,7 +17,7 @@ public class TransactionService
     {
         _context = context;
         _transactions = from m in context.Transaction select m;
-        _budgets = GetBudgetsFromTransactions();
+        _budgets = GetBudgetsFromDb();
 
         _transactionsTableViewModel = new TransactionsTableViewModel
         {
@@ -32,7 +32,7 @@ public class TransactionService
         if (string.IsNullOrEmpty(searchString)) return;
         _transactions = _transactions.Where(transaction =>
             transaction.DescriptionOfTransaction!.Contains(searchString));
-        _budgets = GetBudgetsFromTransactions();
+        _budgets = GetBudgetsFromDb();
     }
 
     public void FilterBudgets(string? budgetFilter)
@@ -75,9 +75,13 @@ public class TransactionService
         _context.SaveChanges();
     }
 
-    public IQueryable<string?> GetBudgetsFromTransactions()
+    public IQueryable<string?> GetBudgetsFromDb()
     {
-        return _transactions.Select(transaction => transaction.Budget).Distinct();
+        var transactions = _transactions.Select(transaction => transaction.Budget).Distinct();
+        var query = from b in _context.Budget select b;
+        return query.OrderBy(b => b.Priority)
+            .Select(b => b.Purpose)
+            .Where(b => transactions.Contains(b));
     }
 
     private Transaction createIncomeTransaction(string budget, decimal value)

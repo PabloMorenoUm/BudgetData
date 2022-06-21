@@ -38,6 +38,7 @@ public class KontoServiceController : Controller
     public IActionResult Gehaltseingang()
     {
         var budgets = from b in _context.Budget select b;
+        budgets = budgets.OrderBy(b => b.Priority);
         BudgetListModel budgetList = new()
         {
             BudgetList = budgets.ToList()
