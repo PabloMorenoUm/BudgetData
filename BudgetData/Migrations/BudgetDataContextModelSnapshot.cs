@@ -33,6 +33,9 @@ namespace BudgetData.Migrations
                     b.Property<decimal>("DefaultIncome")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<int>("Priority")
+                        .HasColumnType("int");
+
                     b.Property<string>("Purpose")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -51,14 +54,12 @@ namespace BudgetData.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
 
                     b.Property<string>("Budget")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("DateOfTransaction")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("DescriptionOfTransaction")
-                        .IsRequired()
                         .HasMaxLength(60)
                         .HasColumnType("nvarchar(60)");
 
