@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics;
 using System.Linq;
 using BudgetData.Controllers;
 using BudgetData.Data;
@@ -49,7 +48,7 @@ public class TransactionControllerTest : IDisposable
     {
         using (var context = new BudgetDataContext(Options))
         {
-            var transactionController = new TransactionController(context);
+            var transactionController = new TransactionController(context, new TransactionService(context));
             var view = transactionController.Index(budgetFilter, searchString) as ViewResult;
             _table = (TransactionsTableViewModel)view.ViewData.Model;
         }
@@ -122,7 +121,7 @@ public class TransactionControllerTest : IDisposable
 
         using (var context = new BudgetDataContext(Options))
         {
-            var transactionController = new TransactionController(context);
+            var transactionController = new TransactionController(context, new TransactionService(context));
             var transaction = new Transaction
             {
                 DescriptionOfTransaction = "Description",
@@ -143,7 +142,7 @@ public class TransactionControllerTest : IDisposable
 
         using (var context = new BudgetDataContext(Options))
         {
-            var transactionController = new TransactionController(context);
+            var transactionController = new TransactionController(context, new TransactionService(context));
             var transaction = new Transaction
             {
                 DescriptionOfTransaction = "Description",

@@ -4,7 +4,16 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace BudgetData.Services;
 
-public class TransactionService
+public interface ITransactionService
+{
+    void SearchTransactionsByDescription(string? searchString);
+    void FilterBudgets(string? budgetFilter);
+    TransactionsTableViewModel GenerateTablesPerBudget();
+    void BookIncomeTransactionsFromDict(Dictionary<string, decimal> incomeValues);
+    IQueryable<string?> GetBudgetsWithTransactionsFromDb();
+}
+
+public class TransactionService : ITransactionService
 {
     public const string BudgetCategoryAll = "Alle";
 

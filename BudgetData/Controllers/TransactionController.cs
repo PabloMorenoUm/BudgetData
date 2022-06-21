@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using BudgetData.Data;
@@ -11,12 +10,12 @@ namespace BudgetData.Controllers
     public class TransactionController : Controller
     {
         private readonly BudgetDataContext _context;
-        private readonly TransactionService _transactionService;
+        private readonly ITransactionService _transactionService;
 
-        public TransactionController(BudgetDataContext context)
+        public TransactionController(BudgetDataContext context, ITransactionService transactionService)
         {
             _context = context;
-            _transactionService = new TransactionService(_context);
+            _transactionService = transactionService;
         }
 
         // GET: Transaction

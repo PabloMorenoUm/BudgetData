@@ -1,5 +1,7 @@
+using System.Numerics;
 using Microsoft.EntityFrameworkCore;
 using BudgetData.Data;
+using BudgetData.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<BudgetDataContext>(options =>
@@ -7,6 +9,8 @@ builder.Services.AddDbContext<BudgetDataContext>(options =>
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+
+builder.Services.AddScoped<ITransactionService, TransactionService>();
 
 var app = builder.Build();
 

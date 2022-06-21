@@ -1,5 +1,3 @@
-using System.ComponentModel.DataAnnotations;
-
 namespace BudgetData.Models;
 
 public class BudgetListModel
