@@ -24,10 +24,10 @@ namespace BudgetData.Controllers
         {
             _transactionService.SearchTransactionsByDescription(searchString);
             _transactionService.FilterBudgets(budgetFilter);
-            
-            return _context.Transaction != null ? 
-                          View(_transactionService.GenerateTablesPerBudget()) :
-                          Problem("Entity set 'BudgetDataContext.Transaction'  is null.");
+
+            return _context.Transaction != null
+                ? View(_transactionService.GenerateTablesPerBudget())
+                : Problem("Entity set 'BudgetDataContext.Transaction'  is null.");
         }
 
         // GET: Transaction/Details/5
@@ -54,7 +54,8 @@ namespace BudgetData.Controllers
             var _budgets = from b in _context.Budget select b.Purpose;
             TransactionViewModel transactionViewModel = new()
             {
-                Budgets = new SelectList(_budgets.Where(b => b != "Gesamteinkommen" || b != "Freizeit").ToList().Append("Freizeit"))
+                Budgets = new SelectList(_budgets.Where(b => b != "Gesamteinkommen" && b != "Freizeit").ToList()
+                    .Append("Freizeit"))
             };
             return View(transactionViewModel);
         }
@@ -64,16 +65,18 @@ namespace BudgetData.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,DateOfTransaction,DescriptionOfTransaction,ValueOfTransaction,Budget")] Transaction transaction,
+        public async Task<IActionResult> Create(
+            [Bind("Id,DateOfTransaction,DescriptionOfTransaction,ValueOfTransaction,Budget")] Transaction transaction,
             [Bind("AnotherItem")] string? anotherItem = null)
         {
             if (!ModelState.IsValid || transaction.Budget == TransactionService.BudgetCategoryAll)
             {
                 return RedirectToAction(nameof(Create));
             }
+
             _context.Add(transaction);
             await _context.SaveChangesAsync();
-            
+
             if (anotherItem != null) return RedirectToAction(nameof(Create));
             return RedirectToAction(nameof(Index));
         }
@@ -91,6 +94,7 @@ namespace BudgetData.Controllers
             {
                 return NotFound();
             }
+
             return View(transaction);
         }
 
@@ -99,7 +103,8 @@ namespace BudgetData.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,DateOfTransaction,DescriptionOfTransaction,ValueOfTransaction,Budget")] Transaction transaction)
+        public async Task<IActionResult> Edit(int id,
+            [Bind("Id,DateOfTransaction,DescriptionOfTransaction,ValueOfTransaction,Budget")] Transaction transaction)
         {
             if (id != transaction.Id)
             {
@@ -123,6 +128,7 @@ namespace BudgetData.Controllers
                     throw;
                 }
             }
+
             return RedirectToAction(nameof(Index));
         }
 
@@ -153,25 +159,34 @@ namespace BudgetData.Controllers
             {
                 return Problem("Entity set 'BudgetDataContext.Transaction'  is null.");
             }
+
             var transaction = await _context.Transaction.FindAsync(id);
             if (transaction != null)
             {
                 _context.Transaction.Remove(transaction);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool TransactionExists(int id)
+        public IActionResult DeleteAll()
         {
-          return (_context.Transaction?.Any(e => e.Id == id)).GetValueOrDefault();
+            try
+            {
+                var affectedRows = _context.Database.ExecuteSqlRaw("TRUNCATE TABLE [Transaction]");
+                return RedirectToAction(nameof(Index));
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine("Deletion failed! " + e);
+                throw;
+            }
         }
 
-        public async void DeleteAll()
+        private bool TransactionExists(int id)
         {
-            _context.Database.ExecuteSqlRawAsync("TRUNCATE TABLE Transaction");;
-            
+            return (_context.Transaction?.Any(e => e.Id == id)).GetValueOrDefault();
         }
     }
 }
