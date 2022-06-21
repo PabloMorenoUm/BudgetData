@@ -17,13 +17,15 @@ public class TransactionService
     {
         _context = context;
         _transactions = from m in context.Transaction select m;
-        _budgets = GetBudgetsFromDb();
+        _budgets = GetBudgetsWithTransactionsFromDb();
+        var budgetListWithAll = _budgets.ToList();
+        budgetListWithAll.Insert(0, BudgetCategoryAll);
 
         _transactionsTableViewModel = new TransactionsTableViewModel
         {
             TotalSum = 0,
             TransactionsPerCategories = new List<TransactionsPerCategory>(),
-            Budgets = new SelectList(_budgets.ToList().Append(BudgetCategoryAll).OrderBy(i => i))
+            Budgets = new SelectList(budgetListWithAll)
         };
     }
 
@@ -32,7 +34,7 @@ public class TransactionService
         if (string.IsNullOrEmpty(searchString)) return;
         _transactions = _transactions.Where(transaction =>
             transaction.DescriptionOfTransaction!.Contains(searchString));
-        _budgets = GetBudgetsFromDb();
+        _budgets = GetBudgetsWithTransactionsFromDb();
     }
 
     public void FilterBudgets(string? budgetFilter)
@@ -75,7 +77,7 @@ public class TransactionService
         _context.SaveChanges();
     }
 
-    public IQueryable<string?> GetBudgetsFromDb()
+    public IQueryable<string?> GetBudgetsWithTransactionsFromDb()
     {
         var transactions = _transactions.Select(transaction => transaction.Budget).Distinct();
         var query = from b in _context.Budget select b;
