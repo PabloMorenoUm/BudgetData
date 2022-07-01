@@ -39,4 +39,11 @@
       <Folder Include="Pages" />
     </ItemGroup>
 
+    <ItemGroup>
+      <_ContentIncludedByDefault Remove="Views\Nutzer\Create.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Nutzer\Delete.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Nutzer\Edit.cshtml" />
+      <_ContentIncludedByDefault Remove="Views\Nutzer\Index.cshtml" />
+    </ItemGroup>
+
 </Project>
