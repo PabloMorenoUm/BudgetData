@@ -5,7 +5,7 @@ EXPOSE 443
 
 FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
 WORKDIR /src
-COPY ["BudgetData/BudgetData.csproj", "BudgetData/"]
+COPY ["BudgetData.csproj", "BudgetData/"]
 RUN dotnet restore "BudgetData/BudgetData.csproj"
 COPY . .
 WORKDIR "/src/BudgetData"
