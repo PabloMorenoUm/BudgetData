@@ -29,7 +29,7 @@
   },
   "homepage": "https://github.com/johnnyreilly/jquery-validation-globalize",
   "devDependencies": {
-    "gulp": "^3.9.0",
+    "gulp": "^5.0.0",
     "gulp-qunit": "^1.2.1",
     "gulp-util": "^3.0.6"
   }
