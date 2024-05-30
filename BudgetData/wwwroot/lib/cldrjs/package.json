@@ -46,7 +46,7 @@
   ],
   "devDependencies": {
     "cldr-data-downloader": "0.2.x",
-    "grunt": "0.4.x",
+    "grunt": "1.5.x",
     "grunt-compare-size": "0.4.0",
     "grunt-contrib-connect": "0.3.x",
     "grunt-contrib-copy": "0.4.x",
